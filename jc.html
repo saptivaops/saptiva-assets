@@ -275,7 +275,7 @@
     outline: none;
     -webkit-appearance: none;
   }
-  .field input::placeholder, .field textarea::placeholder { color: var(--text-3); }
+  .field input::placeholder, .field textarea::placeholder { color: rgba(0,245,196,0.35); }
   .field input:focus, .field textarea:focus { border-color: var(--border-focus); }
   .field textarea { resize: none; height: 72px; line-height: 1.5; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -303,8 +303,8 @@
   .submit-btn {
     width: 100%;
     padding: 16px;
-    background: var(--accent);
-    color: var(--bg);
+    background: #00f5c4;
+    color: #0e0e0c;
     border: none;
     border-radius: var(--radius);
     font-family: 'DM Sans', sans-serif;
@@ -381,15 +381,6 @@
   .social-btn:disabled {
     opacity: 0.35;
     cursor: not-allowed;
-  }
-  .social-btn-command {
-    border-color: var(--border-focus);
-    color: var(--text);
-    font-weight: 600;
-  }
-  .command-panel {
-    margin-top: 10px;
-    animation: fadeIn 0.2s ease;
   }
   @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
   .qr-modal {
@@ -548,7 +539,7 @@
   <!-- BOTTOM BAR -->
   <div class="bottom-bar">
     <button type="button" class="submit-btn" id="submitBtn" onclick="submitLead()">
-      <span class="btn-label">Guardar & Rock On 🤘</span>
+      <span class="btn-label">Guardar & a seguirle chingando 🤘</span>
       <span class="spinner"></span>
     </button>
     <div class="hint">Abre WhatsApp con link de agenda prellenado</div>
@@ -560,27 +551,18 @@
       <button class="social-btn" id="btnLI" onclick="showQR('li')">
         <span class="social-icon">🔗</span><span>LinkedIn</span>
       </button>
-      <button class="social-btn" id="btnGH" onclick="openSocial('gh')">
+      <button class="social-btn" id="btnGH" onclick="showQR('gh')">
         <span class="social-icon">🐙</span><span>GitHub</span>
       </button>
-      <button class="social-btn" id="btnHF" onclick="openSocial('hf')">
+      <button class="social-btn" id="btnHF" onclick="showQR('hf')">
         <span class="social-icon">🤗</span><span>KAL-24B</span>
       </button>
-      <button class="social-btn" id="btnDeck" onclick="openSocial('deck')">
+      <button class="social-btn" id="btnDeck" onclick="showQR('deck')">
         <span class="social-icon">📊</span><span>Sales Deck</span>
       </button>
-      <button class="social-btn social-btn-command" id="btnCmd" onclick="toggleCommand()">
-        <span class="social-icon">⚡</span><span>Command!</span>
-      </button>
+
     </div>
 
-    <!-- Command input panel -->
-    <div class="command-panel" id="commandPanel" style="display:none;">
-      <div style="display:flex;gap:8px;align-items:center;">
-        <input type="text" id="commandInput" placeholder="ej: mandar NDA urgente a prospecto..." style="flex:1;padding:10px 12px;background:var(--surface);border:1px solid var(--border-focus);border-radius:8px;color:var(--text);font-family:inherit;font-size:14px;outline:none;">
-        <button type="button" onclick="sendCommand()" style="padding:10px 16px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">Enviar ⚡</button>
-      </div>
-    </div>
   </div>
 
   <!-- Social overlay for magic URLs -->
@@ -886,13 +868,64 @@
   var currentLang = 'es';
   try { currentLang = sessionStorage.getItem('et_lang') || 'es'; } catch(e) {}
 
+  var LABELS = {
+    es: {
+      sectionLabel: 'Nuevo lead',
+      evento: 'Evento o contexto (ej: AI Summit CDMX, Referido...)',
+      nombre: 'Nombre del contacto',
+      telefono: 'Teléfono',
+      email: 'Email',
+      empresa: 'Empresa',
+      cargo: 'Cargo',
+      contexto: 'Contexto',
+      comentario: '¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?',
+      btn: 'Guardar & a seguirle chingando 🤘',
+      hint: 'Abre WhatsApp con link de agenda prellenado',
+    },
+    en: {
+      sectionLabel: 'New lead',
+      evento: 'Event or context (e.g. AI Summit, Referral...)',
+      nombre: 'Contact name',
+      telefono: 'Phone',
+      email: 'Email',
+      empresa: 'Company',
+      cargo: 'Title',
+      contexto: 'Context',
+      comentario: 'What did you talk about? What do they need? What's the opportunity?',
+      btn: 'Save & keep crushing it 🤘',
+      hint: 'Opens WhatsApp with pre-filled agenda link',
+    }
+  };
+
   function applyLang() {
     var btn = document.getElementById('langToggle');
+    var L = LABELS[currentLang] || LABELS['es'];
     if (currentLang === 'en') {
       btn.innerHTML = '🇺🇸&nbsp;EN';
     } else {
       btn.innerHTML = '🇲🇽&nbsp;ES';
     }
+    // Update section label
+    var sl = document.querySelector('.section-label');
+    if (sl) sl.textContent = L.sectionLabel;
+    // Update placeholders
+    var fields = {
+      'evento': L.evento, 'nombre': L.nombre, 'telefono': L.telefono,
+      'email': L.email, 'empresa': L.empresa, 'cargo': L.cargo,
+      'comentario': L.comentario
+    };
+    Object.keys(fields).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.placeholder = fields[id];
+    });
+    // Update section label for contexto
+    var labels = document.querySelectorAll('.section-label');
+    if (labels[1]) labels[1].textContent = L.contexto;
+    // Update button and hint
+    var btnLabel = document.querySelector('.btn-label');
+    if (btnLabel) btnLabel.textContent = L.btn;
+    var hint = document.querySelector('.hint');
+    if (hint) hint.textContent = L.hint;
   }
 
   function toggleLang() {
@@ -909,7 +942,7 @@
   applyLang();
 
   // ============================================================
-  // SOCIAL BUTTONS — Magic URLs + Command!
+  // SOCIAL BUTTONS — Magic URLs + QR
   // ============================================================
   var qrInstance = null;
 
@@ -923,6 +956,17 @@
       if (!REP.phone) return;
       url = 'https://wa.me/' + REP.phone.replace(/\D/g,'');
       label = '💬 WhatsApp — ' + REP.firstName;
+    } else if (type === 'gh') {
+      if (!REP.githubUrl) return;
+      url = REP.githubUrl;
+      label = '🐙 GitHub — ' + REP.firstName;
+    } else if (type === 'hf') {
+      url = REP.huggingfaceUrl;
+      label = '🤗 KAL-24B — Saptiva AI';
+    } else if (type === 'deck') {
+      if (!REP.salesDeckUrl) return;
+      url = REP.salesDeckUrl;
+      label = '📊 Sales Deck — Saptiva AI';
     }
     document.getElementById('qrLabel').textContent = label;
     var canvas = document.getElementById('qrCanvas');
@@ -962,60 +1006,19 @@
       btnGH.disabled = true;
     }
     // HuggingFace — always available
-    document.getElementById('btnHF').onclick = function() {
-      window.open(REP.huggingfaceUrl, '_blank');
-    };
+    var btnHF = document.getElementById('btnHF');
+    if (!REP.huggingfaceUrl) btnHF.disabled = true;
     // Sales Deck
     var btnDeck = document.getElementById('btnDeck');
-    if (REP.salesDeckUrl) {
-      btnDeck.onclick = function() { window.open(REP.salesDeckUrl, '_blank'); };
-    } else {
-      btnDeck.disabled = true;
-    }
+    if (!REP.salesDeckUrl) btnDeck.disabled = true;
+    // GitHub
+    var btnGH = document.getElementById('btnGH');
+    if (!REP.githubUrl) btnGH.disabled = true;
   }
   initSocialButtons();
 
   function openSocial(type) {
     // handled per button — this is just a fallback
-  }
-
-  function toggleCommand() {
-    var panel = document.getElementById('commandPanel');
-    if (panel.style.display === 'none') {
-      panel.style.display = 'block';
-      document.getElementById('commandInput').focus();
-    } else {
-      panel.style.display = 'none';
-    }
-  }
-
-  function sendCommand() {
-    var cmd = document.getElementById('commandInput').value.trim();
-    if (!cmd) return;
-    // Send command as a note to Notion under current lead or as standalone
-    fetch(WEBHOOK_URL + '?action=command', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        comando: cmd,
-        representante: REP.name,
-        representante_slug: slug,
-        timestamp: new Date().toISOString(),
-      }),
-    }).catch(function(e) { console.error(e); });
-    document.getElementById('commandInput').value = '';
-    document.getElementById('commandPanel').style.display = 'none';
-    // Visual feedback
-    var btn = document.getElementById('btnCmd');
-    btn.style.background = 'var(--green-bg)';
-    btn.style.borderColor = 'var(--green-border)';
-    btn.style.color = 'var(--green)';
-    setTimeout(function() {
-      btn.style.background = '';
-      btn.style.borderColor = '';
-      btn.style.color = '';
-    }, 2000);
   }
 
   function closeSocialOverlay() {
