@@ -275,7 +275,7 @@
     outline: none;
     -webkit-appearance: none;
   }
-  .field input::placeholder, .field textarea::placeholder { color: rgba(0,245,196,0.35); }
+  .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.2); }
   .field input:focus, .field textarea:focus { border-color: var(--border-focus); }
   .field textarea { resize: none; height: 72px; line-height: 1.5; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -708,7 +708,7 @@
 
   function toTitleCase(str) { return smartTitleCase(str); }
 
-  const slug = window.location.pathname.split('/').pop() || 'ch';
+  const slug = (window.location.pathname.split('/').pop() || 'jc').replace('.html','').replace('.htm','');
   const REP = REPS[slug] || REPS['jc'];
   const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwQdY8s2yGOZLtJodkUwh4TumeoNldUw6WFfeTTy5TNoCWiE6XXKtc7p5We-NJQXvpLJA/exec';
   let sessionLeads = 0;
@@ -939,7 +939,10 @@
   }
 
   // Init lang on load
-  applyLang();
+  document.addEventListener("DOMContentLoaded", function() {
+    applyLang();
+    initSocialButtons();
+  });
 
   // ============================================================
   // SOCIAL BUTTONS — Magic URLs + QR
