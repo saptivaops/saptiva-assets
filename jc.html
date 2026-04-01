@@ -713,8 +713,6 @@
   const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwQdY8s2yGOZLtJodkUwh4TumeoNldUw6WFfeTTy5TNoCWiE6XXKtc7p5We-NJQXvpLJA/exec';
   let sessionLeads = 0;
 
-  document.getElementById('repBadge').textContent = REP.initials;
-
   // ============================================================
   // DUPLICATE CHECK
   // ============================================================
@@ -1002,8 +1000,11 @@
   }
 
   // Init — run after DOM
-  applyLang();
-  initSocialButtons();
+  window.onload = function() {
+    document.getElementById('repBadge').textContent = REP.initials;
+    applyLang();
+    initSocialButtons();
+  };
 
   function closeSocialOverlay() {
     document.getElementById('socialOverlay').style.display = 'none';
