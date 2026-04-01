@@ -485,7 +485,7 @@
         <div class="topbar-product">EvenTracker</div>
       </div>
     </div>
-    <div class="topbar-rep" id="repBadge">CH</div>
+    <div class="topbar-rep" id="repBadge">--</div>
   </div>
 
   <!-- FORM -->
@@ -628,7 +628,7 @@
       name: 'Ronald Escalona', firstName: 'Ronald', initials: 'RE',
       role: 'SVP of Engineering',
       phone: '573503424459', email: 're@saptiva.com',
-      calendarUrl: 'CALENDAR_URL_RE',
+      calendarUrl: 'https://calendar.app.google/wTb8fsqueP5Ez8kB6',
       linkedinUrl: 'https://www.linkedin.com/in/ronaldescalona/',
       githubUrl: null,
       huggingfaceUrl: 'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1',
@@ -638,7 +638,7 @@
       name: 'Jaziel Flores', firstName: 'Jaziel', initials: 'JF',
       role: 'Forward Deploy Engineer',
       phone: null, email: 'jf@saptiva.com',
-      calendarUrl: 'CALENDAR_URL_JF',
+      calendarUrl: 'https://calendar.app.google/EmDMrXTnB9hbFEpy6',
       linkedinUrl: 'https://www.linkedin.com/in/jazieldavidfloresrodriguez/',
       githubUrl: null,
       huggingfaceUrl: 'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1',
@@ -648,7 +648,7 @@
       name: 'Mario Hernandez', firstName: 'Mario', initials: 'MH',
       role: 'AI Engineer',
       phone: '528681245690', email: 'mh@saptiva.com',
-      calendarUrl: 'CALENDAR_URL_MH',
+      calendarUrl: 'https://calendar.app.google/XkNgyutxkAwovMbq9',
       linkedinUrl: 'https://www.linkedin.com/in/mario-hernandez-120707174/',
       githubUrl: null,
       huggingfaceUrl: 'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1',
@@ -658,7 +658,7 @@
       name: 'Francisco Enriquez', firstName: 'Francisco', initials: 'FE',
       role: 'AI Engineer',
       phone: '525566066215', email: 'fe@saptiva.com',
-      calendarUrl: 'CALENDAR_URL_FE',
+      calendarUrl: 'https://calendar.app.google/TUNb88of2MiPZdt1A',
       linkedinUrl: null,
       githubUrl: null,
       huggingfaceUrl: 'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1',
@@ -668,7 +668,7 @@
       name: 'Mois\u00e9s Morillo', firstName: 'Mois\u00e9s', initials: 'MM',
       role: 'AI Platform Engineer',
       phone: null, email: 'mm@saptiva.com',
-      calendarUrl: 'CALENDAR_URL_MM',
+      calendarUrl: 'https://calendar.app.google/BggXnbbLLastAQQj6',
       linkedinUrl: 'https://www.linkedin.com/in/moisesmorillo/',
       githubUrl: null,
       huggingfaceUrl: 'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1',
@@ -938,14 +938,8 @@
     return currentLang;
   }
 
-  // Init lang on load
-  document.addEventListener("DOMContentLoaded", function() {
-    applyLang();
-    initSocialButtons();
-  });
-
   // ============================================================
-  // SOCIAL BUTTONS — Magic URLs + QR
+  // SOCIAL BUTTONS — QR for all
   // ============================================================
   var qrInstance = null;
 
@@ -954,23 +948,25 @@
     if (type === 'li') {
       if (!REP.linkedinUrl) return;
       url = REP.linkedinUrl;
-      label = '🔗 LinkedIn — ' + REP.firstName;
+      label = 'LinkedIn — ' + REP.firstName;
     } else if (type === 'wa') {
       if (!REP.phone) return;
       url = 'https://wa.me/' + REP.phone.replace(/\D/g,'');
-      label = '💬 WhatsApp — ' + REP.firstName;
+      label = 'WhatsApp — ' + REP.firstName;
     } else if (type === 'gh') {
       if (!REP.githubUrl) return;
       url = REP.githubUrl;
-      label = '🐙 GitHub — ' + REP.firstName;
+      label = 'GitHub — ' + REP.firstName;
     } else if (type === 'hf') {
+      if (!REP.huggingfaceUrl) return;
       url = REP.huggingfaceUrl;
-      label = '🤗 KAL-24B — Saptiva AI';
+      label = 'KAL-24B — Saptiva AI';
     } else if (type === 'deck') {
       if (!REP.salesDeckUrl) return;
       url = REP.salesDeckUrl;
-      label = '📊 Sales Deck — Saptiva AI';
+      label = 'Sales Deck — Saptiva AI';
     }
+    if (!url) return;
     document.getElementById('qrLabel').textContent = label;
     var canvas = document.getElementById('qrCanvas');
     canvas.innerHTML = '';
@@ -993,36 +989,21 @@
   }
 
   function initSocialButtons() {
-    var waPhone = REP.phone ? REP.phone.replace(/\D/g,'') : null;
     var btnWA = document.getElementById('btnWA');
-    if (!waPhone) btnWA.disabled = true;
-    // LinkedIn
     var btnLI = document.getElementById('btnLI');
-    if (!REP.linkedinUrl) {
-      btnLI.disabled = true;
-    }
-    // GitHub
     var btnGH = document.getElementById('btnGH');
-    if (REP.githubUrl) {
-      btnGH.onclick = function() { window.open(REP.githubUrl, '_blank'); };
-    } else {
-      btnGH.disabled = true;
-    }
-    // HuggingFace — always available
     var btnHF = document.getElementById('btnHF');
-    if (!REP.huggingfaceUrl) btnHF.disabled = true;
-    // Sales Deck
     var btnDeck = document.getElementById('btnDeck');
-    if (!REP.salesDeckUrl) btnDeck.disabled = true;
-    // GitHub
-    var btnGH = document.getElementById('btnGH');
-    if (!REP.githubUrl) btnGH.disabled = true;
+    if (!REP.phone) { btnWA.disabled = true; btnWA.style.opacity = '0.3'; }
+    if (!REP.linkedinUrl) { btnLI.disabled = true; btnLI.style.opacity = '0.3'; }
+    if (!REP.githubUrl) { btnGH.disabled = true; btnGH.style.opacity = '0.3'; }
+    if (!REP.huggingfaceUrl) { btnHF.disabled = true; btnHF.style.opacity = '0.3'; }
+    if (!REP.salesDeckUrl) { btnDeck.disabled = true; btnDeck.style.opacity = '0.3'; }
   }
-  initSocialButtons();
 
-  function openSocial(type) {
-    // handled per button — this is just a fallback
-  }
+  // Init — run after DOM
+  applyLang();
+  initSocialButtons();
 
   function closeSocialOverlay() {
     document.getElementById('socialOverlay').style.display = 'none';
