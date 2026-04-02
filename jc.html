@@ -2,6 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="EvenTracker">
+<link rel="apple-touch-icon" href="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>EvenTracker</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -46,19 +51,19 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* BODY */
-.body{flex:1;padding:20px;display:flex;flex-direction:column;gap:0}
+.body{flex:1;padding:12px 20px;display:flex;flex-direction:column;gap:0}
 
 /* SECTION */
-.section{padding:20px 0;border-bottom:1px solid var(--border)}
+.section{padding:12px 0;border-bottom:1px solid var(--border)}
 .section:last-child{border-bottom:none}
-.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:14px}
+.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:8px}
 
 /* FIELDS */
-.field{margin-bottom:12px}
+.field{margin-bottom:8px}
 .field:last-child{margin-bottom:0}
 .field input,.field textarea{
   width:100%;
-  height:38px;
+  height:36px;
   padding:0 12px;
   background:var(--surface);
   border:1px solid var(--border-input);
@@ -95,25 +100,25 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 .save-btn{
   width:100%;height:40px;
-  background:var(--green);color:#fff;
+  background:#00c060;color:#fff;
   border:none;border-radius:var(--r);
   font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
   cursor:pointer;letter-spacing:-0.1px;
   transition:background 0.15s,transform 0.1s;
 }
 .save-btn:active{background:#009a4d;transform:scale(0.99)}
-.save-btn:hover{background:#00a855}
+.save-btn:hover{background:#00a855;}
 .hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:8px}
 
 .social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
 .sb{
   display:flex;flex-direction:column;align-items:center;gap:3px;
   padding:9px 4px;
-  background:var(--bg);border:1px solid var(--border);border-radius:var(--r);
-  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:var(--text-2);
-  cursor:pointer;transition:border-color 0.15s,background 0.15s;
+  background:#111827;border:1px solid #1f2937;border-radius:var(--r);
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:#9ca3af;
+  cursor:pointer;transition:all 0.15s;
 }
-.sb:hover{border-color:#bbf7d0;background:var(--green-bg);color:var(--green-dark)}
+.sb:hover{border-color:#00c060;color:#fff;}
 .sb:active{transform:scale(0.97)}
 .sb .ic{font-size:15px}
 .sb.off{opacity:0.3;pointer-events:none;cursor:default}
@@ -235,14 +240,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <body>
 <div class="app">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="topbar-left">
-      <img src="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG" class="topbar-logo" alt="Saptiva AI">
-      <div class="topbar-sep"></div>
-      <div class="topbar-title">EvenTracker</div>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="topbar-left">
+        <img src="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG" class="topbar-logo" alt="Saptiva AI">
+        <div class="topbar-sep"></div>
+        <div class="topbar-title">EvenTracker</div>
+      </div>
+      <div class="rep-badge" id="repBadge">--</div>
     </div>
-    <div class="rep-badge" id="repBadge">--</div>
+    <div class="header-slogan">Every new lead = $</div>
   </div>
 
   <!-- FORM BODY -->
