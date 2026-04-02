@@ -5,483 +5,271 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>EvenTracker</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-:root {
-  --green: #00c060;
-  --green-light: #e6f9f0;
-  --green-dark: #009048;
-  --bg: #f5f6f7;
-  --surface: #ffffff;
-  --border: #e4e6e9;
-  --border-focus: #00c060;
-  --text: #1a1d23;
-  --text-2: #5a6070;
-  --text-3: #9aa0ae;
-  --warn: #e67e22;
-  --warn-bg: #fef6ee;
-  --warn-border: #fad3aa;
-  --radius: 8px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f5f6f7;
+  --surface:#ffffff;
+  --border:#e4e6e9;
+  --border-input:#d0d5dd;
+  --focus:#00c060;
+  --text:#111827;
+  --text-2:#6b7280;
+  --text-3:#9ca3af;
+  --green:#00c060;
+  --green-bg:#f0fdf6;
+  --green-dark:#007a3d;
+  --warn:#d97706;
+  --warn-bg:#fffbeb;
+  --warn-border:#fde68a;
+  --r:6px;
 }
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
+
+/* TOPBAR */
+.topbar{
+  height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
 }
-.app {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
+.topbar-left{display:flex;align-items:center;gap:8px}
+.topbar-logo{height:26px;width:auto;display:block;object-fit:contain}
+.topbar-sep{width:1px;height:16px;background:var(--border)}
+.topbar-title{font-size:13px;font-weight:500;color:var(--text-2);letter-spacing:-0.1px}
+.rep-badge{
+  font-size:11px;font-weight:600;color:var(--green-dark);
+  background:var(--green-bg);border:1px solid #bbf7d0;
+  padding:3px 9px;border-radius:100px;letter-spacing:0.2px;
 }
 
-/* ── TOPBAR ── */
-.topbar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: var(--shadow);
-}
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.logo-wrap { display: flex; align-items: center; gap: 8px; }
-.logo-mark {
-  width: 28px; height: 28px;
-  background: linear-gradient(135deg, #00c060, #00e87a);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: white; letter-spacing: -0.5px;
-}
-.logo-text { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
-.logo-text span { color: var(--green); }
-.divider-v { width: 1px; height: 20px; background: var(--border); }
-.page-title { font-size: 13px; font-weight: 500; color: var(--text-2); }
-.rep-chip {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--green-light);
-  border: 1px solid #b3ecd4;
-  border-radius: 100px;
-  padding: 4px 10px 4px 6px;
-}
-.rep-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-.rep-name { font-size: 12px; font-weight: 600; color: var(--green-dark); }
+/* BODY */
+.body{flex:1;padding:20px;display:flex;flex-direction:column;gap:0}
 
-/* ── FORM AREA ── */
-.form-area { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+/* SECTION */
+.section{padding:20px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:14px}
 
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: var(--shadow);
+/* FIELDS */
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field input,.field textarea{
+  width:100%;
+  height:38px;
+  padding:0 12px;
+  background:var(--surface);
+  border:1px solid var(--border-input);
+  border-radius:var(--r);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  transition:border-color 0.15s,box-shadow 0.15s;
+  outline:none;
+  -webkit-appearance:none;
 }
-.card-header {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 14px;
+.field input::placeholder,.field textarea::placeholder{color:var(--text-3)}
+.field input:focus,.field textarea:focus{
+  border-color:var(--focus);
+  box-shadow:0 0 0 3px rgba(0,192,96,0.12);
 }
-.card-icon {
-  width: 28px; height: 28px;
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-}
-.card-icon.green { background: var(--green-light); }
-.card-icon.blue { background: #eef3ff; }
-.card-title { font-size: 12px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.8px; }
+.field textarea{height:76px;padding:10px 12px;resize:none;line-height:1.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-hint{font-size:11px;color:var(--warn);margin-top:4px;font-weight:500}
 
-.field { margin-bottom: 10px; }
-.field:last-child { margin-bottom: 0; }
-.field label { display: block; font-size: 11px; font-weight: 500; color: var(--text-3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-.field input, .field textarea {
-  width: 100%;
-  padding: 10px 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  outline: none;
-  -webkit-appearance: none;
+.dup-warn{
+  display:none;background:var(--warn-bg);border:1px solid var(--warn-border);
+  border-radius:var(--r);padding:8px 12px;font-size:12px;color:var(--warn);
+  line-height:1.5;margin-top:8px;
 }
-.field input::placeholder, .field textarea::placeholder { color: var(--text-3); font-size: 13px; }
-.field input:focus, .field textarea:focus {
-  border-color: var(--border-focus);
-  background: white;
-  box-shadow: 0 0 0 3px rgba(0,192,96,0.1);
-}
-.field textarea { resize: none; height: 80px; line-height: 1.5; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dup-warn.show{display:block}
 
-.dup-warn {
-  display: none;
-  background: var(--warn-bg);
-  border: 1px solid var(--warn-border);
-  border-radius: var(--radius);
-  padding: 10px 12px;
-  font-size: 12px;
-  color: var(--warn);
-  line-height: 1.5;
-  margin-top: 8px;
+/* BOTTOM */
+.bottom{
+  padding:14px 20px;
+  padding-bottom:max(14px,env(safe-area-inset-bottom));
+  background:var(--surface);
+  border-top:1px solid var(--border);
 }
-.dup-warn.show { display: block; }
+.save-btn{
+  width:100%;height:40px;
+  background:var(--green);color:#fff;
+  border:none;border-radius:var(--r);
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;letter-spacing:-0.1px;
+  transition:background 0.15s,transform 0.1s;
+}
+.save-btn:active{background:#009a4d;transform:scale(0.99)}
+.save-btn:hover{background:#00a855}
+.hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:8px}
 
-/* ── BOTTOM ── */
-.bottom {
-  padding: 12px 16px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+.social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.sb{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:9px 4px;
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--r);
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:var(--text-2);
+  cursor:pointer;transition:border-color 0.15s,background 0.15s;
 }
-.save-btn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #00c060, #00a050);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  letter-spacing: -0.2px;
-  box-shadow: 0 2px 8px rgba(0,192,96,0.3);
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-.save-btn:active { transform: scale(0.98); box-shadow: 0 1px 4px rgba(0,192,96,0.2); }
-.hint { text-align: center; font-size: 11px; color: var(--text-3); margin-top: 8px; }
+.sb:hover{border-color:#bbf7d0;background:var(--green-bg);color:var(--green-dark)}
+.sb:active{transform:scale(0.97)}
+.sb .ic{font-size:15px}
+.sb.off{opacity:0.3;pointer-events:none;cursor:default}
 
-.social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
-.sb {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 10px 4px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif;
-  font-size: 10px; font-weight: 500; color: var(--text-2);
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+/* QR MODAL */
+.qr-backdrop{
+  position:fixed;inset:0;background:rgba(17,24,39,0.5);
+  z-index:300;display:none;align-items:center;justify-content:center;
+  padding:24px;backdrop-filter:blur(4px);
 }
-.sb:active { background: var(--green-light); border-color: #b3ecd4; }
-.sb .icon { font-size: 18px; }
-.sb.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+.qr-backdrop.on{display:flex;animation:fadeIn 0.2s ease}
+.qr-card{
+  background:var(--surface);border-radius:12px;padding:24px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  max-width:260px;width:100%;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+.qr-name{font-size:13px;font-weight:600;color:var(--text-2);text-align:center}
+.qr-close{
+  width:100%;height:34px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r);font-family:'Inter',sans-serif;font-size:13px;
+  font-weight:500;color:var(--text-2);cursor:pointer;margin-top:2px;
+}
+#qr-canvas canvas,#qr-canvas img{border-radius:6px;display:block}
 
-/* ── QR MODAL ── */
-.qr-modal {
-  position: fixed; inset: 0;
-  background: rgba(15,20,30,0.6);
-  z-index: 300;
-  display: none; align-items: center; justify-content: center;
-  padding: 24px;
-  backdrop-filter: blur(4px);
+/* DEPLOY SHEET */
+.deploy-backdrop{
+  position:fixed;inset:0;background:rgba(17,24,39,0.45);
+  z-index:200;display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
 }
-.qr-modal.show { display: flex; }
-.qr-card {
-  background: white;
-  border-radius: 16px;
-  padding: 28px 24px 20px;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  max-width: 280px; width: 100%;
-  box-shadow: var(--shadow-md);
+.deploy-backdrop.on{display:flex;animation:fadeIn 0.2s ease}
+.deploy-sheet{
+  width:100%;max-width:480px;
+  background:var(--surface);
+  border-radius:16px 16px 0 0;
+  padding:24px 20px 32px;
+  animation:slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1);
 }
-.qr-lbl { font-size: 13px; font-weight: 600; color: var(--text-2); text-align: center; }
-.qr-hint { font-size: 12px; color: var(--text-3); }
-.qr-close {
-  margin-top: 4px; padding: 10px 24px;
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--text-2);
-  cursor: pointer; width: 100%;
-}
-#qr-canvas canvas, #qr-canvas img { border-radius: 8px; display: block; }
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── DEPLOY MODAL ── */
-.term-overlay {
-  position: fixed; inset: 0;
-  background: rgba(15,20,30,0.55);
-  z-index: 200;
-  display: none; align-items: flex-end; justify-content: center;
-  backdrop-filter: blur(6px);
+/* Sheet header */
+.sheet-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sheet-title{font-size:15px;font-weight:600;color:var(--text)}
+.sheet-chip{
+  font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;
+  background:#fef3c7;border:1px solid #fde68a;color:#92400e;
+  display:flex;align-items:center;gap:5px;
+  transition:all 0.3s;
 }
-.term-overlay.show { display: flex; animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-@keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
-.deploy-modal {
-  width: 100%; max-width: 480px;
-  background: white;
-  border-radius: 20px 20px 0 0;
-  padding: 24px 20px 32px;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
-}
-.deploy-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px;
-}
-.deploy-header-left { display: flex; align-items: center; gap: 12px; }
-.deploy-logo {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #00c060, #00e87a);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 800; color: white;
-}
-.deploy-title { font-size: 15px; font-weight: 600; color: #1a1d23; }
-.deploy-subtitle { font-size: 12px; color: #9aa0ae; margin-top: 1px; }
-.deploy-status-chip {
-  display: flex; align-items: center; gap: 6px;
-  padding: 5px 10px;
-  border-radius: 100px;
-  background: #fff8e6;
-  border: 1px solid #fde68a;
-  font-size: 12px; font-weight: 500; color: #b45309;
-  transition: all 0.3s;
-}
-.deploy-status-chip.done {
-  background: var(--green-light);
-  border-color: #b3ecd4;
-  color: var(--green-dark);
-}
-.chip-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #f59e0b;
-  animation: chipPulse 1s ease-in-out infinite;
-}
-.deploy-status-chip.done .chip-dot { background: var(--green); animation: none; }
-@keyframes chipPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.sheet-chip.done{background:var(--green-bg);border-color:#bbf7d0;color:var(--green-dark)}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:blink 1s ease-in-out infinite}
+.sheet-chip.done .chip-dot{background:var(--green);animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 
-.deploy-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 16px; }
-.step {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f2f4;
-  opacity: 0.3;
-  transition: opacity 0.4s ease;
+/* Steps */
+.steps{display:flex;flex-direction:column;margin-bottom:16px}
+.step{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--border);
+  opacity:0.25;transition:opacity 0.35s ease;
 }
-.step.active { opacity: 1; }
-.step-icon {
-  width: 28px; height: 28px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  background: #f0f2f4;
-  color: #9aa0ae;
-  transition: all 0.3s;
+.step:last-child{border-bottom:none}
+.step.active{opacity:1}
+.step-ico{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);transition:all 0.3s;
 }
-.step-icon.running {
-  background: #fff8e6;
-  color: #f59e0b;
-  animation: iconPulse 1s ease-in-out infinite;
-}
-.step-icon.done {
-  background: var(--green-light);
-  color: var(--green);
-}
-@keyframes iconPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-.step-info { flex: 1; }
-.step-name { font-size: 13px; font-weight: 500; color: #1a1d23; }
-.step-detail { font-size: 11px; color: #9aa0ae; margin-top: 1px; }
-.step-time { font-size: 11px; color: #9aa0ae; font-variant-numeric: tabular-nums; min-width: 40px; text-align: right; }
+.step-ico svg{width:13px;height:13px}
+.step-ico.running{background:#fef3c7}
+.step-ico.running svg{animation:spin 1s linear infinite;color:#f59e0b}
+.step-ico.done{background:var(--green-bg)}
+.step-ico.done svg{color:var(--green)}
+.step-body{flex:1}
+.step-name{font-size:13px;font-weight:500;color:var(--text)}
+.step-sub{font-size:11px;color:var(--text-3);margin-top:1px}
+.step-ms{font-size:11px;color:var(--text-3);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
 
-.success-banner {
-  display: flex; align-items: center; gap: 14px;
-  background: var(--green-light);
-  border: 1px solid #b3ecd4;
-  border-radius: 12px;
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  animation: fadeIn 0.4s ease;
+/* Success banner */
+.success-banner{
+  display:none;
+  background:var(--green-bg);border:1px solid #bbf7d0;border-radius:var(--r);
+  padding:12px 14px;margin-bottom:14px;
+  flex-direction:row;align-items:center;gap:12px;
+  animation:fadeIn 0.3s ease;
 }
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-.success-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--green);
-  color: white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 700;
-  flex-shrink: 0;
+.success-banner.on{display:flex}
+.success-ico{
+  width:32px;height:32px;border-radius:50%;background:var(--green);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;flex-shrink:0;
 }
-.success-title { font-size: 14px; font-weight: 600; color: var(--green-dark); }
-.success-sub { font-size: 12px; color: #3a9060; margin-top: 2px; }
+.success-title{font-size:13px;font-weight:600;color:var(--green-dark)}
+.success-sub{font-size:11px;color:#065f46;margin-top:2px}
 
-.deploy-footer { display: flex; justify-content: center; align-items: center; min-height: 44px; }
-.wa-btn {
-  display: flex; align-items: center; gap: 10px;
-  background: #25d366;
-  color: white;
-  border: none; border-radius: 10px;
-  padding: 13px 28px;
-  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
-  cursor: pointer; text-decoration: none;
-  box-shadow: 0 2px 12px rgba(37,211,102,0.35);
-  animation: fadeIn 0.3s ease;
-  width: 100%; justify-content: center;
+/* WA button */
+.wa-btn{
+  display:none;width:100%;height:42px;
+  background:#25d366;color:#fff;border:none;border-radius:var(--r);
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;align-items:center;justify-content:center;gap:8px;
+  animation:fadeIn 0.3s ease;
 }
-.processing-dots { display: flex; gap: 4px; }
-.processing-dots span {
-  width: 6px; height: 6px; border-radius: 50%; background: #9aa0ae;
-  animation: dot 1.2s ease-in-out infinite;
-}
-.processing-dots span:nth-child(2) { animation-delay: 0.2s; }
-.processing-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dot { 0%,80%,100%{transform:scale(0.7);opacity:0.4} 40%{transform:scale(1);opacity:1} }
-.deploy-processing { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #9aa0ae; }
+.wa-btn.on{display:flex}
+.wa-btn:active{background:#1fba58;transform:scale(0.99)}
 
-@keyframes spin { to{transform:rotate(360deg)} }
-@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+.processing{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--text-3)}
+.dots{display:flex;gap:4px}
+.dots span{width:5px;height:5px;border-radius:50%;background:var(--border-input);animation:dot 1.2s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{transform:scale(0.7);opacity:0.4}40%{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- DEPLOY MODAL -->
-  <div class="term-overlay" id="termOverlay">
-    <div class="deploy-modal">
-      <!-- Header -->
-      <div class="deploy-header">
-        <div class="deploy-header-left">
-          <div class="deploy-logo">S</div>
-          <div>
-            <div class="deploy-title">EvenTracker</div>
-            <div class="deploy-subtitle">Procesando lead...</div>
-          </div>
-        </div>
-        <div class="deploy-status-chip" id="deployChip">
-          <div class="chip-dot"></div>
-          <span id="chipLabel">En proceso</span>
-        </div>
-      </div>
-
-      <!-- Steps -->
-      <div class="deploy-steps" id="deploySteps">
-        <div class="step" id="s0">
-          <div class="step-icon pending" id="si0">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
-          </div>
-          <div class="step-info">
-            <div class="step-name">Guardar en base de datos</div>
-            <div class="step-detail">Notion · Lead Pipeline</div>
-          </div>
-          <div class="step-time" id="st0"></div>
-        </div>
-        <div class="step" id="s1">
-          <div class="step-icon pending" id="si1">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
-          </div>
-          <div class="step-info">
-            <div class="step-name">Enviar email de seguimiento</div>
-            <div class="step-detail" id="sd1">events@saptiva.com → prospecto</div>
-          </div>
-          <div class="step-time" id="st1"></div>
-        </div>
-        <div class="step" id="s2">
-          <div class="step-icon pending" id="si2">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
-          </div>
-          <div class="step-info">
-            <div class="step-name">Programar recordatorios automáticos</div>
-            <div class="step-detail">48 hrs · 120 hrs · si no agenda</div>
-          </div>
-          <div class="step-time" id="st2"></div>
-        </div>
-        <div class="step" id="s3">
-          <div class="step-icon pending" id="si3">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
-          </div>
-          <div class="step-info">
-            <div class="step-name">Preparar mensaje de WhatsApp</div>
-            <div class="step-detail">Link de agenda prellenado</div>
-          </div>
-          <div class="step-time" id="st3"></div>
-        </div>
-      </div>
-
-      <!-- Success banner -->
-      <div class="success-banner" id="successBanner" style="display:none;">
-        <div class="success-icon">✓</div>
-        <div class="success-text">
-          <div class="success-title">Flujo de lead completado</div>
-          <div class="success-sub">Ahora mándale un hola en WhatsApp para cerrar el ciclo</div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="deploy-footer" id="deployFooter">
-        <a href="#" id="waBtn" class="wa-btn" style="display:none;" onclick="openWA()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Abrir WhatsApp
-        </a>
-        <div class="deploy-processing" id="deployProcessing">
-          <div class="processing-dots"><span></span><span></span><span></span></div>
-          <span>Procesando...</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
-      <div class="logo-wrap">
-        <div class="logo-mark">S</div>
-        <div class="logo-text">saptiva<span>AI</span></div>
-      </div>
-      <div class="divider-v"></div>
-      <div class="page-title">EvenTracker</div>
+      <img src="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG" class="topbar-logo" alt="Saptiva AI">
+      <div class="topbar-sep"></div>
+      <div class="topbar-title">EvenTracker</div>
     </div>
-    <div class="rep-chip">
-      <div class="rep-dot"></div>
-      <div class="rep-name" id="repName">JC</div>
-    </div>
+    <div class="rep-badge" id="repBadge">--</div>
   </div>
 
-  <!-- FORM -->
-  <div class="form-area">
+  <!-- FORM BODY -->
+  <div class="body">
 
-    <div class="card">
-      <div class="card-header">
-        <div class="card-icon green">📍</div>
-        <div class="card-title">Contexto del evento</div>
-      </div>
+    <div class="section">
+      <div class="section-label">Evento</div>
       <div class="field">
         <input type="text" id="evento" placeholder="AI Summit CDMX, Expo Fintech, Referido..." autocomplete="off">
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="card-icon blue">👤</div>
-        <div class="card-title">Datos del contacto</div>
-      </div>
+    <div class="section">
+      <div class="section-label">Contacto</div>
       <div class="field">
         <input type="text" id="nombre" placeholder="Nombre completo" required autocomplete="off">
       </div>
       <div class="row">
         <div class="field">
-          <input type="tel" id="telefono" placeholder="Teléfono" required autocomplete="off">
+          <input type="tel" id="telefono" placeholder="+52 477 000 0000" required autocomplete="off">
+          <div class="field-hint">Incluir código de país</div>
         </div>
         <div class="field">
-          <input type="email" id="email" placeholder="Email" autocomplete="off">
+          <input type="email" id="email" placeholder="email@empresa.com" autocomplete="off">
         </div>
       </div>
+      <div class="dup-warn" id="dupWarn"></div>
       <div class="row">
         <div class="field">
           <input type="text" id="empresa" placeholder="Empresa" autocomplete="off">
@@ -490,14 +278,10 @@ body {
           <input type="text" id="cargo" placeholder="Cargo" autocomplete="off">
         </div>
       </div>
-      <div class="dup-warn" id="dupWarn"></div>
     </div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="card-icon green">💬</div>
-        <div class="card-title">Contexto del lead</div>
-      </div>
+    <div class="section">
+      <div class="section-label">Notas</div>
       <div class="field">
         <textarea id="comentario" placeholder="¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?"></textarea>
       </div>
@@ -506,148 +290,183 @@ body {
   </div>
 
   <!-- QR MODAL -->
-  <div class="qr-modal" id="qrModal" onclick="closeQR()">
+  <div class="qr-backdrop" id="qrBackdrop" onclick="closeQR()">
     <div class="qr-card" onclick="event.stopPropagation()">
-      <div class="qr-lbl" id="qrLbl"></div>
+      <div class="qr-name" id="qrName"></div>
       <div id="qr-canvas"></div>
-      <div class="qr-hint">Escanea con tu cámara</div>
+      <div style="font-size:11px;color:var(--text-3)">Escanea con tu cámara</div>
       <button class="qr-close" onclick="closeQR()">Cerrar</button>
     </div>
   </div>
 
-  <!-- BOTTOM -->
-  <div class="bottom">
-    <button class="save-btn" onclick="guardar()">
-      Guardar & a seguirle chingando 🤘
-    </button>
-    <div class="hint">Abre WhatsApp con link de agenda prellenado</div>
-    <div class="social-grid">
-      <button class="sb" onclick="showQR('wa')"><span class="icon">💬</span><span>WhatsApp</span></button>
-      <button class="sb" onclick="showQR('li')"><span class="icon">🔗</span><span>LinkedIn</span></button>
-      <button class="sb" onclick="showQR('gh')"><span class="icon">🐙</span><span>GitHub</span></button>
-      <button class="sb" onclick="showQR('hf')"><span class="icon">🤗</span><span>KAL-24B</span></button>
+  <!-- DEPLOY SHEET -->
+  <div class="deploy-backdrop" id="deployBackdrop">
+    <div class="deploy-sheet">
+
+      <div class="sheet-header">
+        <div class="sheet-title">Procesando lead</div>
+        <div class="sheet-chip" id="sheetChip">
+          <div class="chip-dot" id="chipDot"></div>
+          <span id="chipLabel">En proceso</span>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step" id="s0">
+          <div class="step-ico" id="si0"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
+          <div class="step-body">
+            <div class="step-name">Guardar en base de datos</div>
+            <div class="step-sub">Notion · Lead Pipeline</div>
+          </div>
+          <div class="step-ms" id="sm0"></div>
+        </div>
+        <div class="step" id="s1">
+          <div class="step-ico" id="si1"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
+          <div class="step-body">
+            <div class="step-name">Enviar email de seguimiento</div>
+            <div class="step-sub" id="ss1">events@saptiva.com → prospecto</div>
+          </div>
+          <div class="step-ms" id="sm1"></div>
+        </div>
+        <div class="step" id="s2">
+          <div class="step-ico" id="si2"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
+          <div class="step-body">
+            <div class="step-name">Programar recordatorios</div>
+            <div class="step-sub">48 hrs · 120 hrs · si no agenda</div>
+          </div>
+          <div class="step-ms" id="sm2"></div>
+        </div>
+        <div class="step" id="s3">
+          <div class="step-ico" id="si3"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
+          <div class="step-body">
+            <div class="step-name">Preparar mensaje de WhatsApp</div>
+            <div class="step-sub">Listo para enviar</div>
+          </div>
+          <div class="step-ms" id="sm3"></div>
+        </div>
+      </div>
+
+      <div class="success-banner" id="successBanner">
+        <div class="success-ico">✓</div>
+        <div>
+          <div class="success-title">Flujo de lead completado</div>
+          <div class="success-sub">Ahora mándale un hola en WhatsApp para cerrar el ciclo</div>
+        </div>
+      </div>
+
+      <div id="sheetFooter">
+        <div class="processing" id="processing">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>Procesando...</span>
+        </div>
+        <button class="wa-btn" id="waBtn" onclick="openWA()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Terminar conectando por WhatsApp
+        </button>
+      </div>
+
     </div>
   </div>
-</div>
 
+  <!-- BOTTOM BAR -->
+  <div class="bottom">
+    <button class="save-btn" onclick="guardar()">Guardar & a seguirle chingando 🤘</button>
+    <div class="hint">Abre WhatsApp con mensaje prellenado al guardar</div>
+    <div class="social-row">
+      <button class="sb" onclick="showQR('wa')"><span class="ic">💬</span><span>WhatsApp</span></button>
+      <button class="sb" onclick="showQR('li')"><span class="ic">🔗</span><span>LinkedIn</span></button>
+      <button class="sb" onclick="showQR('gh')"><span class="ic">🐙</span><span>GitHub</span></button>
+      <button class="sb" onclick="showQR('hf')"><span class="ic">🤗</span><span>KAL-24B</span></button>
+    </div>
+  </div>
+
+</div>
 <script>
-var REP = {
-  name: 'Jesús Cisneros', firstName: 'Jesús', initials: 'JC',
-  role: 'COO & Cofounder', phone: '524776700684', email: 'jc@saptiva.com',
-  calendarUrl: 'https://calendar.app.google/ykwfLX9srHfn4noJ8',
-  linkedinUrl: 'https://www.linkedin.com/in/jesuscisneros/',
-  githubUrl: 'https://github.com/jdjca',
-  huggingfaceUrl: 'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'
+var REPS = {
+  jc:{name:'Jesús Cisneros',firstName:'Jesús',initials:'JC',role:'COO & Cofounder',phone:'524776700684',email:'jc@saptiva.com',calendarUrl:'https://calendar.app.google/ykwfLX9srHfn4noJ8',linkedinUrl:'https://www.linkedin.com/in/jesuscisneros/',githubUrl:'https://github.com/jdjca',huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  ac:{name:'Angel Cisneros',firstName:'Angel',initials:'AC',role:'CEO & Cofounder',phone:'524773946525',email:'ac@saptiva.com',calendarUrl:'https://calendar.app.google/42VByfbnnVM3zdx69',linkedinUrl:'https://www.linkedin.com/in/angelcisneros03/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  gg:{name:'Lupita Gutiérrez',firstName:'Lupita',initials:'GG',role:'Directora Administrativa',phone:'524771299656',email:'gg@saptiva.com',calendarUrl:'https://calendar.app.google/M822cGsQo1FJT8KM7',linkedinUrl:'https://www.linkedin.com/in/guadalupe-guti%C3%A9rrez-3b90ab35a/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  ch:{name:'Cristian Huertas',firstName:'Cristian',initials:'CH',role:'Chief Revenue Officer',phone:'525523576987',email:'ch@saptiva.com',calendarUrl:null,linkedinUrl:'https://www.linkedin.com/in/cris-huertas/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  cl:{name:'Carlos Lara',firstName:'Carlos',initials:'CL',role:'Head of Product',phone:'525578457977',email:'cl@saptiva.com',calendarUrl:'https://calendar.app.google/rgRkqFDhePPiicNx7',linkedinUrl:'https://www.linkedin.com/in/carloslaraarias/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  re:{name:'Ronald Escalona',firstName:'Ronald',initials:'RE',role:'SVP of Engineering',phone:'573503424459',email:'re@saptiva.com',calendarUrl:'https://calendar.app.google/wTb8fsqueP5Ez8kB6',linkedinUrl:'https://www.linkedin.com/in/ronaldescalona/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  jf:{name:'Jaziel Flores',firstName:'Jaziel',initials:'JF',role:'Forward Deploy Engineer',phone:null,email:'jf@saptiva.com',calendarUrl:'https://calendar.app.google/EmDMrXTnB9hbFEpy6',linkedinUrl:'https://www.linkedin.com/in/jazieldavidfloresrodriguez/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  mh:{name:'Mario Hernandez',firstName:'Mario',initials:'MH',role:'AI Engineer',phone:'528681245690',email:'mh@saptiva.com',calendarUrl:'https://calendar.app.google/XkNgyutxkAwovMbq9',linkedinUrl:'https://www.linkedin.com/in/mario-hernandez-120707174/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  fe:{name:'Francisco Enriquez',firstName:'Francisco',initials:'FE',role:'AI Engineer',phone:'525566066215',email:'fe@saptiva.com',calendarUrl:'https://calendar.app.google/TUNb88of2MiPZdt1A',linkedinUrl:null,githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
+  mm:{name:'Moisés Morillo',firstName:'Moisés',initials:'MM',role:'AI Platform Engineer',phone:null,email:'mm@saptiva.com',calendarUrl:'https://calendar.app.google/BggXnbbLLastAQQj6',linkedinUrl:'https://www.linkedin.com/in/moisesmorillo/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
 };
 
-var WEBHOOK = 'https://script.google.com/macros/s/AKfycbwQdY8s2yGOZLtJodkUwh4TumeoNldUw6WFfeTTy5TNoCWiE6XXKtc7p5We-NJQXvpLJA/exec';
+var WEBHOOK='https://script.google.com/macros/s/AKfycbwQdY8s2yGOZLtJodkUwh4TumeoNldUw6WFfeTTy5TNoCWiE6XXKtc7p5We-NJQXvpLJA/exec';
+var slug=(window.location.pathname.split('/').pop()||'jc').replace(/\.html?$/,'');
+var REP=REPS[slug]||REPS['jc'];
+document.getElementById('repBadge').textContent=REP.initials;
 
-document.getElementById('repName').textContent = REP.initials;
+// Disable GitHub QR if no URL
+if(!REP.githubUrl) document.querySelector('.sb:nth-child(3)').classList.add('off');
 
-function toTitleCase(s) {
-  var upper = ['AI','ML','API','SDK','B2B','B2C','CRM','ERP','KYC','CEO','CTO','COO','VP','CDMX','MX','USA','SAP','IBM','AWS','IA','TI','NDA','ID','QR','LLM','NLP'];
-  return s.replace(/\S+/g, function(w) {
-    if (upper.indexOf(w.toUpperCase()) > -1) return w.toUpperCase();
-    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-  });
+function toTC(s){
+  var u=['AI','ML','API','SDK','B2B','B2C','CRM','ERP','KYC','CEO','CTO','COO','VP','CDMX','MX','USA','SAP','IBM','AWS','IA','LLM'];
+  return s.replace(/\S+/g,function(w){return u.indexOf(w.toUpperCase())>-1?w.toUpperCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()});
 }
-
-document.getElementById('nombre').addEventListener('blur', function() {
-  if (this.value.trim()) this.value = toTitleCase(this.value.trim());
+['nombre','evento'].forEach(function(id){
+  document.getElementById(id).addEventListener('blur',function(){if(this.value.trim())this.value=toTC(this.value.trim());});
 });
-document.getElementById('evento').addEventListener('blur', function() {
-  if (this.value.trim()) this.value = toTitleCase(this.value.trim());
-});
-
-document.getElementById('email').addEventListener('blur', function() {
-  var email = this.value.trim().toLowerCase();
-  if (!email || email.indexOf('@') < 0) return;
-  var dw = document.getElementById('dupWarn');
-  dw.classList.remove('show');
-  fetch(WEBHOOK + '?action=check_email&email=' + encodeURIComponent(email))
-    .then(function(r){ return r.json(); })
-    .then(function(d){ if(d.exists){ dw.innerHTML='⚠️ Email ya registrado el <strong>'+d.date+'</strong> por <strong>'+d.rep+'</strong>.'; dw.classList.add('show'); } })
+document.getElementById('email').addEventListener('blur',function(){
+  var em=this.value.trim().toLowerCase();
+  if(!em||em.indexOf('@')<0)return;
+  var dw=document.getElementById('dupWarn');dw.classList.remove('show');
+  fetch(WEBHOOK+'?action=check_email&email='+encodeURIComponent(em))
+    .then(function(r){return r.json();})
+    .then(function(d){if(d.exists){dw.innerHTML='⚠️ Email ya registrado el <strong>'+d.date+'</strong> por <strong>'+d.rep+'</strong>.';dw.classList.add('show');}})
     .catch(function(){});
 });
 
-var _waUrl = '';
+// Deploy sequence
+var _waUrl='';
+function openWA(){if(_waUrl)window.open(_waUrl,'_blank');}
 
-function openWA() {
-  if (_waUrl) window.open(_waUrl, '_blank');
+var SPIN='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" style="animation:spin 0.8s linear infinite"><circle cx="7" cy="7" r="5" stroke-dasharray="20 12" stroke-linecap="round"/></svg>';
+var CHECK='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 7l3 3 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var IDLE='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg>';
+
+function runDeploy(leadName,waUrl){
+  _waUrl=waUrl;
+  var bd=document.getElementById('deployBackdrop');
+  var chip=document.getElementById('sheetChip');
+  var chipLabel=document.getElementById('chipLabel');
+  var banner=document.getElementById('successBanner');
+  var waBtn=document.getElementById('waBtn');
+  var proc=document.getElementById('processing');
+
+  // reset
+  chip.className='sheet-chip';chipLabel.textContent='En proceso';
+  banner.classList.remove('on');waBtn.classList.remove('on');proc.style.display='flex';
+  document.getElementById('ss1').textContent='events@saptiva.com → '+leadName;
+  for(var i=0;i<4;i++){
+    document.getElementById('s'+i).classList.remove('active');
+    var ico=document.getElementById('si'+i);
+    ico.className='step-ico';ico.innerHTML=IDLE;
+    document.getElementById('sm'+i).textContent='';
+  }
+  bd.classList.add('on');
+
+  function activate(i,d){setTimeout(function(){document.getElementById('s'+i).classList.add('active');var ico=document.getElementById('si'+i);ico.className='step-ico running';ico.innerHTML=SPIN;},d);}
+  function complete(i,d,ms){setTimeout(function(){var ico=document.getElementById('si'+i);ico.className='step-ico done';ico.innerHTML=CHECK;document.getElementById('sm'+i).textContent=ms+'ms';},d);}
+
+  activate(0,150);complete(0,850,687);
+  activate(1,950);complete(1,1750,1243);
+  activate(2,1850);complete(2,2650,412);
+  activate(3,2750);complete(3,3350,89);
+
+  setTimeout(function(){
+    chip.classList.add('done');chipLabel.textContent='Completado';
+    proc.style.display='none';
+    banner.classList.add('on');
+    waBtn.classList.add('on');
+  },3600);
 }
 
-function runTerminal(leadName, waUrl, smsUrl) {
-  _waUrl = waUrl;
-  var overlay = document.getElementById('termOverlay');
-  var chip = document.getElementById('deployChip');
-  var chipLabel = document.getElementById('chipLabel');
-  var successBanner = document.getElementById('successBanner');
-  var waBtn = document.getElementById('waBtn');
-  var processing = document.getElementById('deployProcessing');
-
-  // Reset
-  chip.className = 'deploy-status-chip';
-  chipLabel.textContent = 'En proceso';
-  successBanner.style.display = 'none';
-  waBtn.style.display = 'none';
-  processing.style.display = 'flex';
-  for (var i = 0; i < 4; i++) {
-    var s = document.getElementById('s'+i);
-    var si = document.getElementById('si'+i);
-    s.classList.remove('active');
-    si.className = 'step-icon pending';
-    si.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/></svg>';
-    document.getElementById('st'+i).textContent = '';
-  }
-  document.getElementById('sd1').textContent = 'events@saptiva.com → ' + leadName;
-  overlay.classList.add('show');
-
-  var checkSVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3.5 3.5 5.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  var spinSVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="animation:spin 1s linear infinite"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5" stroke-dasharray="20 12" stroke-linecap="round"/></svg>';
-
-  function activateStep(i, delay) {
-    setTimeout(function() {
-      var s = document.getElementById('s'+i);
-      var si = document.getElementById('si'+i);
-      s.classList.add('active');
-      si.className = 'step-icon running';
-      si.innerHTML = spinSVG;
-    }, delay);
-  }
-
-  function completeStep(i, delay, ms) {
-    setTimeout(function() {
-      var si = document.getElementById('si'+i);
-      si.className = 'step-icon done';
-      si.innerHTML = checkSVG;
-      document.getElementById('st'+i).textContent = ms + 'ms';
-    }, delay);
-  }
-
-  // Step 0 — Notion
-  activateStep(0, 200);
-  completeStep(0, 900, 687);
-  // Step 1 — Email
-  activateStep(1, 1000);
-  completeStep(1, 1900, 1243);
-  // Step 2 — Reminders
-  activateStep(2, 2000);
-  completeStep(2, 2800, 412);
-  // Step 3 — WhatsApp prep
-  activateStep(3, 2900);
-  completeStep(3, 3500, 89);
-
-  // Done
-  setTimeout(function() {
-    chip.classList.add('done');
-    chipLabel.textContent = 'Completado';
-    processing.style.display = 'none';
-    successBanner.style.display = 'flex';
-    waBtn.style.display = 'flex';
-  }, 3800);
-}
-
-function guardar() {
+function guardar(){
+  if(!REP.calendarUrl){alert('⚠️ '+REP.firstName+' aún no tiene URL de Google Calendar. Avísale a JC.');return;}
   var nombre=document.getElementById('nombre').value.trim();
   var telefono=document.getElementById('telefono').value.trim();
   var email=document.getElementById('email').value.trim();
@@ -658,40 +477,33 @@ function guardar() {
   var err=false;
   ['nombre','telefono'].forEach(function(id){
     var el=document.getElementById(id);
-    if(!el.value.trim()){ el.style.borderColor='#e74c3c'; el.style.animation='shake 0.4s ease'; setTimeout(function(){ el.style.borderColor=''; el.style.animation=''; },600); err=true; }
+    if(!el.value.trim()){el.style.borderColor='#ef4444';el.style.animation='shake 0.4s ease';setTimeout(function(){el.style.borderColor='';el.style.animation='';},600);err=true;}
   });
-  if(err) return;
-  var leadData={nombre:nombre,telefono:telefono,email:email,empresa:empresa,cargo:cargo,comentario:comentario,evento:evento,idioma:'es',representante:REP.name,representante_slug:'jc',representante_email:REP.email,calendar_url:REP.calendarUrl,timestamp:new Date().toISOString()};
+  if(err)return;
+  var leadData={nombre:nombre,telefono:telefono,email:email,empresa:empresa,cargo:cargo,comentario:comentario,evento:evento,idioma:'es',representante:REP.name,representante_slug:slug,representante_email:REP.email,calendar_url:REP.calendarUrl,timestamp:new Date().toISOString()};
   var waPhone=telefono.replace(/\D/g,'');
-  var waMsg=encodeURIComponent('Hola, soy '+REP.firstName+' de Saptiva AI 👋\n\nFue un gusto platicar contigo'+(evento?' en '+evento:'')+'. Te comparto mi link para agendar nuestra call:\n\n📅 '+REP.calendarUrl+'\n\n¡Quedo al pendiente!');
-  var waUrl='https://wa.me/'+waPhone+'?text='+waMsg;
-  var smsUrl='sms:'+waPhone+'?body='+encodeURIComponent('Hola, soy '+REP.firstName+' de Saptiva AI. Agenda nuestra call: '+REP.calendarUrl);
+  if(waPhone&&waPhone.charAt(0)!=='+')waPhone='+'+waPhone;
+  var waUrl='https://wa.me/'+waPhone.replace('+','')+'?text='+encodeURIComponent('Hola, soy '+REP.name+' de Saptiva AI');
   fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(leadData)}).catch(function(){});
-  document.getElementById('nombre').value=''; document.getElementById('telefono').value=''; document.getElementById('email').value='';
-  document.getElementById('empresa').value=''; document.getElementById('cargo').value=''; document.getElementById('comentario').value=''; document.getElementById('evento').value='';
+  ['nombre','telefono','email','empresa','cargo','comentario','evento'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('dupWarn').classList.remove('show');
-  runTerminal(nombre,waUrl,smsUrl);
-  setTimeout(function(){ document.getElementById('nombre').focus(); },5600);
+  runDeploy(nombre,waUrl);
+  setTimeout(function(){document.getElementById('nombre').focus();},4000);
 }
 
-function showQR(type) {
+function showQR(type){
   var url,label;
-  if(type==='wa'){ url='https://wa.me/'+REP.phone; label='WhatsApp · '+REP.firstName; }
-  else if(type==='li'){ url=REP.linkedinUrl; label='LinkedIn · '+REP.firstName; }
-  else if(type==='gh'){ url=REP.githubUrl; label='GitHub · '+REP.firstName; }
-  else if(type==='hf'){ url=REP.huggingfaceUrl; label='KAL-24B · Saptiva AI'; }
-  if(!url) return;
-  document.getElementById('qrLbl').textContent=label;
-  var canvas=document.getElementById('qr-canvas');
-  canvas.innerHTML='';
-  new QRCode(canvas,{text:url,width:200,height:200,colorDark:'#1a1d23',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-  document.getElementById('qrModal').classList.add('show');
+  if(type==='wa'){url='https://wa.me/'+REP.phone;label='WhatsApp · '+REP.firstName;}
+  else if(type==='li'){if(!REP.linkedinUrl)return;url=REP.linkedinUrl;label='LinkedIn · '+REP.firstName;}
+  else if(type==='gh'){if(!REP.githubUrl)return;url=REP.githubUrl;label='GitHub · '+REP.firstName;}
+  else if(type==='hf'){url=REP.huggingfaceUrl;label='KAL-24B · Saptiva AI';}
+  if(!url)return;
+  document.getElementById('qrName').textContent=label;
+  var c=document.getElementById('qr-canvas');c.innerHTML='';
+  new QRCode(c,{text:url,width:192,height:192,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  document.getElementById('qrBackdrop').classList.add('on');
 }
-
-function closeQR() {
-  document.getElementById('qrModal').classList.remove('show');
-  document.getElementById('qr-canvas').innerHTML='';
-}
+function closeQR(){document.getElementById('qrBackdrop').classList.remove('on');document.getElementById('qr-canvas').innerHTML='';}
 </script>
 </body>
 </html>
