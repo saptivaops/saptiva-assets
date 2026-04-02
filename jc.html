@@ -31,7 +31,7 @@
   --r:6px;
 }
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
+.app{max-width:480px;margin:0 auto;background:var(--bg)}
 
 /* TOPBAR */
 .topbar{
@@ -51,7 +51,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* BODY */
-.body{flex:1;padding:8px 20px 0;display:flex;flex-direction:column;gap:0}
+.body{padding:8px 20px 0;display:flex;flex-direction:column;gap:0}
 
 /* SECTION */
 .section{padding:8px 0;border-bottom:1px solid var(--border)}
@@ -92,12 +92,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .dup-warn.show{display:block}
 
 /* BOTTOM */
-.bottom{
-  padding:10px 20px;
-  padding-bottom:max(14px,env(safe-area-inset-bottom));
-  background:var(--surface);
-  border-top:1px solid var(--border);
-}
 .save-btn{
   width:100%;height:40px;
   background:#71f3d3;color:#0a1a14;
@@ -373,8 +367,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <!-- BOTTOM BAR -->
-  <div class="bottom">
+  <!-- ACTIONS — inline with form -->
+  <div style="padding:8px 20px 16px">
     <button class="save-btn" onclick="guardar()">Guardar & a seguirle chingando 🤘</button>
     <div class="hint">Abre WhatsApp con mensaje prellenado al guardar</div>
     <div class="social-row">
