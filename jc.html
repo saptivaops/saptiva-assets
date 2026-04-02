@@ -22,9 +22,9 @@
   --text:#111827;
   --text-2:#6b7280;
   --text-3:#9ca3af;
-  --green:#00c060;
-  --green-bg:#f0fdf6;
-  --green-dark:#007a3d;
+  --green:#71f3d3;
+  --green-bg:#f0fefb;
+  --green-dark:#0a7a5a;
   --warn:#d97706;
   --warn-bg:#fffbeb;
   --warn-border:#fde68a;
@@ -51,19 +51,19 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* BODY */
-.body{flex:1;padding:12px 20px;display:flex;flex-direction:column;gap:0}
+.body{flex:1;padding:8px 20px 0;display:flex;flex-direction:column;gap:0}
 
 /* SECTION */
-.section{padding:12px 0;border-bottom:1px solid var(--border)}
-.section:last-child{border-bottom:none}
-.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:8px}
+.section{padding:8px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none;padding-bottom:0}
+.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:6px}
 
 /* FIELDS */
-.field{margin-bottom:8px}
+.field{margin-bottom:6px}
 .field:last-child{margin-bottom:0}
 .field input,.field textarea{
   width:100%;
-  height:36px;
+  height:32px;
   padding:0 12px;
   background:var(--surface);
   border:1px solid var(--border-input);
@@ -80,8 +80,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   border-color:var(--focus);
   box-shadow:0 0 0 3px rgba(0,192,96,0.12);
 }
-.field textarea{height:76px;padding:10px 12px;resize:none;line-height:1.5}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field textarea{height:52px;padding:8px 12px;resize:none;line-height:1.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .field-hint{font-size:11px;color:var(--warn);margin-top:4px;font-weight:500}
 
 .dup-warn{
@@ -93,27 +93,27 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 /* BOTTOM */
 .bottom{
-  padding:14px 20px;
+  padding:10px 20px;
   padding-bottom:max(14px,env(safe-area-inset-bottom));
   background:var(--surface);
   border-top:1px solid var(--border);
 }
 .save-btn{
   width:100%;height:40px;
-  background:#00c060;color:#fff;
+  background:#71f3d3;color:#0a1a14;
   border:none;border-radius:var(--r);
   font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
   cursor:pointer;letter-spacing:-0.1px;
   transition:background 0.15s,transform 0.1s;
 }
-.save-btn:active{background:#009a4d;transform:scale(0.99)}
-.save-btn:hover{background:#00a855;}
-.hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:8px}
+.save-btn:active{background:#4de8c0;transform:scale(0.99)}
+.save-btn:hover{background:#4de8c0;}
+.hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:6px}
 
-.social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
 .sb{
   display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:9px 4px;
+  padding:7px 4px;
   background:#111827;border:1px solid #1f2937;border-radius:var(--r);
   font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:#9ca3af;
   cursor:pointer;transition:all 0.15s;
@@ -240,17 +240,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <body>
 <div class="app">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-top">
-      <div class="topbar-left">
-        <img src="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG" class="topbar-logo" alt="Saptiva AI">
-        <div class="topbar-sep"></div>
-        <div class="topbar-title">EvenTracker</div>
-      </div>
-      <div class="rep-badge" id="repBadge">--</div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG" class="topbar-logo" alt="Saptiva AI">
+      <div class="topbar-sep"></div>
+      <div class="topbar-title">EvenTracker</div>
     </div>
-    <div class="header-slogan">Every new lead = $</div>
+    <div class="rep-badge" id="repBadge">--</div>
   </div>
 
   <!-- FORM BODY -->
@@ -291,7 +288,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="section">
       <div class="section-label">Notas</div>
       <div class="field">
-        <textarea id="comentario" placeholder="¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?"></textarea>
+        <textarea id="comentario" placeholder="¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?" maxlength="140"></textarea>
       </div>
     </div>
 
