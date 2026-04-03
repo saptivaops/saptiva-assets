@@ -2,6 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="EvenTracker">
+<link rel="apple-touch-icon" href="https://jdjca.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>EvenTracker</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -17,16 +22,16 @@
   --text:#111827;
   --text-2:#6b7280;
   --text-3:#9ca3af;
-  --green:#00c060;
-  --green-bg:#f0fdf6;
-  --green-dark:#007a3d;
+  --green:#71f3d3;
+  --green-bg:#f0fefb;
+  --green-dark:#0a7a5a;
   --warn:#d97706;
   --warn-bg:#fffbeb;
   --warn-border:#fde68a;
   --r:6px;
 }
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
+.app{max-width:480px;margin:0 auto;background:var(--bg)}
 
 /* TOPBAR */
 .topbar{
@@ -46,19 +51,19 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 }
 
 /* BODY */
-.body{flex:1;padding:20px;display:flex;flex-direction:column;gap:0}
+.body{padding:8px 20px 0;display:flex;flex-direction:column;gap:0}
 
 /* SECTION */
-.section{padding:20px 0;border-bottom:1px solid var(--border)}
-.section:last-child{border-bottom:none}
-.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:14px}
+.section{padding:8px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none;padding-bottom:0}
+.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:6px}
 
 /* FIELDS */
-.field{margin-bottom:12px}
+.field{margin-bottom:6px}
 .field:last-child{margin-bottom:0}
 .field input,.field textarea{
   width:100%;
-  height:38px;
+  height:32px;
   padding:0 12px;
   background:var(--surface);
   border:1px solid var(--border-input);
@@ -75,8 +80,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   border-color:var(--focus);
   box-shadow:0 0 0 3px rgba(0,192,96,0.12);
 }
-.field textarea{height:76px;padding:10px 12px;resize:none;line-height:1.5}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field textarea{height:52px;padding:8px 12px;resize:none;line-height:1.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .field-hint{font-size:11px;color:var(--warn);margin-top:4px;font-weight:500}
 
 .dup-warn{
@@ -87,33 +92,27 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .dup-warn.show{display:block}
 
 /* BOTTOM */
-.bottom{
-  padding:14px 20px;
-  padding-bottom:max(14px,env(safe-area-inset-bottom));
-  background:var(--surface);
-  border-top:1px solid var(--border);
-}
 .save-btn{
   width:100%;height:40px;
-  background:var(--green);color:#fff;
+  background:#71f3d3;color:#0a1a14;
   border:none;border-radius:var(--r);
   font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
   cursor:pointer;letter-spacing:-0.1px;
   transition:background 0.15s,transform 0.1s;
 }
-.save-btn:active{background:#009a4d;transform:scale(0.99)}
-.save-btn:hover{background:#00a855}
-.hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:8px}
+.save-btn:active{background:#4de8c0;transform:scale(0.99)}
+.save-btn:hover{background:#4de8c0;}
+.hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:6px}
 
-.social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
 .sb{
   display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:9px 4px;
-  background:var(--bg);border:1px solid var(--border);border-radius:var(--r);
-  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:var(--text-2);
-  cursor:pointer;transition:border-color 0.15s,background 0.15s;
+  padding:7px 4px;
+  background:#111827;border:1px solid #1f2937;border-radius:var(--r);
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:#9ca3af;
+  cursor:pointer;transition:all 0.15s;
 }
-.sb:hover{border-color:#bbf7d0;background:var(--green-bg);color:var(--green-dark)}
+.sb:hover{border-color:#00c060;color:#fff;}
 .sb:active{transform:scale(0.97)}
 .sb .ic{font-size:15px}
 .sb.off{opacity:0.3;pointer-events:none;cursor:default}
@@ -283,7 +282,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="section">
       <div class="section-label">Notas</div>
       <div class="field">
-        <textarea id="comentario" placeholder="¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?"></textarea>
+        <textarea id="comentario" placeholder="¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?" maxlength="140"></textarea>
       </div>
     </div>
 
@@ -368,8 +367,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     </div>
   </div>
 
-  <!-- BOTTOM BAR -->
-  <div class="bottom">
+  <!-- ACTIONS — inline with form -->
+  <div style="padding:8px 20px 16px">
     <button class="save-btn" onclick="guardar()">Guardar & a seguirle chingando 🤘</button>
     <div class="hint">Abre WhatsApp con mensaje prellenado al guardar</div>
     <div class="social-row">
