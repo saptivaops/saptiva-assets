@@ -7,12 +7,12 @@
   "theme_color": "#00c060",
   "icons": [
     {
-      "src": "https://jdjca.github.io/saptiva-assets/saptiva_logo_small_Square.png",
+      "src": "https://saptivaops.github.io/saptiva-assets/saptiva_logo_small_Square.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://jdjca.github.io/saptiva-assets/saptiva_logo_small_Square.png",
+      "src": "https://saptivaops.github.io/saptiva-assets/saptiva_logo_small_Square.png",
       "sizes": "512x512",
       "type": "image/png"
     }
