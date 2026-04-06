@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ROOT">
+<title>ROOT // BiWeekly</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#f5f5f3;--surface:#ffffff;--border:#e2e0db;--border-input:#ccc9c2;--focus:#1a6b3f;--text:#111110;--text-2:#5c5a55;--text-3:#9a9790;--green:#1a6b3f;--green-light:#e4f2eb;--green-dark:#115530;--red:#b91c1c;--red-light:#fef2f2;--warn:#b45309;--warn-bg:#fffbeb;--r:8px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased}
+.app{max-width:520px;margin:0 auto;background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;padding:14px 20px}
+.header-top{display:flex;align-items:center;gap:10px}
+.header-logo{height:22px;width:auto;display:block;object-fit:contain}
+.header-sep{width:1px;height:20px;background:var(--border)}
+.header-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:0.3px}
+.header-sub{font-size:11px;color:var(--text-3);margin-top:2px;font-weight:500}
+.body{padding:16px 20px 32px;display:flex;flex-direction:column;gap:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:4px}
+.field input,.field textarea{width:100%;height:44px;padding:0 14px;background:var(--surface);border:1px solid var(--border-input);border-radius:var(--r);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;outline:none;-webkit-appearance:none;transition:border-color 0.15s,box-shadow 0.15s}
+.field input:focus,.field textarea:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(26,107,63,0.1)}
+.field input::placeholder,.field textarea::placeholder{color:var(--text-3)}
+.field textarea{height:72px;padding:10px 14px;resize:none;line-height:1.5}
+.ms-wrap{position:relative}
+.ms-selected{display:flex;flex-wrap:wrap;gap:4px;min-height:44px;padding:6px 14px;background:var(--surface);border:1px solid var(--border-input);border-radius:var(--r);cursor:pointer;align-items:center;transition:border-color 0.15s}
+.ms-selected.empty::after{content:'Selecciona responsable(s)';color:var(--text-3);font-size:15px}
+.ms-chip{font-size:12px;font-weight:600;padding:3px 8px;border-radius:4px;background:var(--green-light);color:var(--green-dark);display:flex;align-items:center;gap:4px;white-space:nowrap}
+.ms-chip .ms-x{cursor:pointer;font-size:14px;line-height:1;opacity:0.6}
+.ms-dropdown{display:none;position:absolute;top:100%;left:0;right:0;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);max-height:220px;overflow-y:auto;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.ms-dropdown.on{display:block}
+.ms-option{padding:10px 14px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);transition:background 0.1s}
+.ms-option:last-child{border-bottom:none}
+.ms-option:active{background:var(--green-light)}
+.ms-option.selected{background:var(--green-light);font-weight:600;color:var(--green-dark)}
+.ms-check{width:16px;height:16px;border-radius:3px;border:1.5px solid var(--border-input);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.ms-option.selected .ms-check{background:var(--green);border-color:var(--green);color:#fff}
+.date-row{display:flex;gap:8px}
+.date-row select{flex:1;height:44px;padding:0 10px;background:var(--surface);border:1px solid var(--border-input);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;color:var(--text);-webkit-appearance:none;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%239a9790' d='M5 7L1 3h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.date-toggle{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.date-toggle label{font-size:13px;color:var(--text-2);font-weight:500;cursor:pointer}
+.date-toggle input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);cursor:pointer}
+.btn-main{width:100%;height:50px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s}
+.btn-main:active{transform:scale(0.98);background:var(--green-dark)}
+.btn-ghost{width:100%;height:44px;background:var(--surface);color:var(--text-2);border:1.5px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.15s}
+.btn-ghost:active{transform:scale(0.98);background:#f0efed}
+.pending-panel{display:none;margin-top:8px;padding:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r)}
+.pending-panel.on{display:block;animation:fadeIn 0.2s ease}
+.pending-item{padding:10px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
+.pending-item:last-child{border-bottom:none}
+.pi-top{display:flex;justify-content:space-between;align-items:center}
+.pi-task{font-size:14px;font-weight:600;color:var(--text)}
+.pi-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.5px}
+.pi-status.st-Pendiente{background:var(--red-light);color:var(--red)}
+.pi-status.st-En-proceso{background:var(--warn-bg);color:var(--warn)}
+.pi-status.st-Bloqueado{background:#f3f4f6;color:#6b7280}
+.pi-reps{font-size:12px;color:var(--text-3);font-weight:500}
+.pi-deadline{font-size:11px;color:var(--warn);font-weight:600}
+.pi-deadline.overdue{color:var(--red)}
+.pending-notion-btn{display:block;width:100%;height:40px;margin-top:12px;background:#f5f4f2;color:var(--text-2);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;line-height:40px;text-align:center}
+.pending-empty{font-size:13px;color:var(--text-3);padding:12px 0}
+.deploy-backdrop{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center}
+.deploy-backdrop.on{display:flex}
+.deploy-sheet{width:100%;max-width:520px;background:var(--surface);border-radius:16px 16px 0 0;padding:24px 20px 32px;padding-bottom:max(32px,env(safe-area-inset-bottom));animation:sheetUp 0.3s cubic-bezier(0.34,1.2,0.64,1)}
+@keyframes sheetUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sheet-title{font-size:15px;font-weight:700;color:var(--text)}
+.sheet-chip{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:#fef3c7;border:1px solid #fde68a;color:#92400e;display:flex;align-items:center;gap:5px;transition:all 0.3s}
+.sheet-chip.done{background:var(--green-light);border-color:#bbf7d0;color:var(--green-dark)}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:blink 1s ease-in-out infinite}
+.sheet-chip.done .chip-dot{background:var(--green);animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.steps{display:flex;flex-direction:column;margin-bottom:16px}
+.step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);opacity:0.25;transition:opacity 0.35s ease}
+.step:last-child{border-bottom:none}
+.step.active{opacity:1}
+.step-ico{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--bg);transition:all 0.3s}
+.step-ico svg{width:13px;height:13px}
+.step-ico.running{background:#fef3c7}
+.step-ico.running svg{animation:spin 1s linear infinite;color:#f59e0b}
+.step-ico.done{background:var(--green-light)}
+.step-ico.done svg{color:var(--green)}
+.step-body{flex:1}
+.step-name{font-size:13px;font-weight:500;color:var(--text)}
+.step-sub{font-size:11px;color:var(--text-3);margin-top:1px}
+.step-ms{font-size:11px;color:var(--text-3);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
+.sheet-done{display:none;background:var(--green-light);border:1px solid #bbf7d0;border-radius:var(--r);padding:12px 14px;margin-bottom:14px;flex-direction:row;align-items:center;gap:12px;animation:fadeIn 0.3s ease}
+.sheet-done.on{display:flex}
+.sheet-done-ico{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.sheet-done-text{font-size:13px;font-weight:600;color:var(--green-dark)}
+.sheet-done-sub{font-size:11px;color:#065f46;margin-top:2px}
+.sheet-close{width:100%;height:44px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:6px}
+.sheet-close.on{display:flex}
+.sheet-close:active{background:var(--green-dark);transform:scale(0.98)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-top">
+      <img src="https://raw.githubusercontent.com/jdjca/saptiva-assets/main/Saptiva%20AI%20logo_whitebg.PNG" alt="Saptiva AI" class="header-logo">
+      <div class="header-sep"></div>
+      <div class="header-title">ROOT // BiWeekly</div>
+    </div>
+    <div class="header-sub">Task tracker · Leadership Team</div>
+  </div>
+  <div class="body">
+    <div class="field"><label>Responsable(s)</label><div class="ms-wrap"><div class="ms-selected empty" id="msSelected" onclick="toggleDropdown()"></div><div class="ms-dropdown" id="msDropdown"></div></div></div>
+    <div class="field"><label>Task</label><input type="text" id="taskTitle" placeholder="Ej: Sacar cita con CFO de BBVA"></div>
+    <div class="field"><label>Descripción</label><textarea id="taskDesc" placeholder="Contexto o detalles adicionales..."></textarea></div>
+    <div class="field">
+      <div class="date-toggle"><input type="checkbox" id="hasDeadline"><label for="hasDeadline">¿Tiene fecha límite?</label></div>
+      <div class="date-row" id="dateRow" style="display:none"><select id="deadlineDay"></select><select id="deadlineMonth"></select></div>
+    </div>
+    <button class="btn-main" onclick="guardarTask()">🌳 Registrar task</button>
+    <button class="btn-ghost" onclick="togglePending()">📋 Tasks pendientes</button>
+    <div class="pending-panel" id="pendingPanel"><div id="pendingBody"><div class="pending-empty">Cargando...</div></div></div>
+  </div>
+  <div class="deploy-backdrop" id="deployBackdrop">
+    <div class="deploy-sheet">
+      <div class="sheet-header"><div class="sheet-title">Registrando task</div><div class="sheet-chip" id="sheetChip"><div class="chip-dot"></div><span id="chipLabel">En proceso</span></div></div>
+      <div class="steps" id="stepsContainer"></div>
+      <div class="sheet-done" id="sheetDone"><div class="sheet-done-ico">✓</div><div><div class="sheet-done-text">Task registrado</div><div class="sheet-done-sub" id="doneSub"></div></div></div>
+      <button class="sheet-close" id="sheetClose" onclick="closeSheet()">🌳 Cerrar y registrar otro</button>
+    </div>
+  </div>
+</div>
+<script>
+var WEBHOOK='https://script.google.com/macros/s/AKfycbwhIQvIJr2PopuqZQkfFtgksVqfqlQqUYU7xDqV9WdikaPr8BEygongzpMpSa0KPd6V/exec';
+var NOTION_DB_URL='https://www.notion.so/4e02ff687476495d89b7a45f77bbac89';
+var IDLE='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg>';
+var SPIN='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1.5a5.5 5.5 0 1 1-5.5 5.5"/></svg>';
+var CHECK='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.5 7l2.5 2.5 4.5-5"/></svg>';
+var TEAM=[{name:'Angel Cisneros',label:'Angel Cisneros — CEO'},{name:'Cristian Huertas',label:'Cristian Huertas — CRO'},{name:'Lupita Gutiérrez',label:'Lupita Gutiérrez — Dir. Admin'},{name:'Carlos Lara',label:'Carlos Lara — Head of Product'},{name:'Ronald Escalona',label:'Ronald Escalona — SVP Eng'},{name:'Jesús Cisneros',label:'Jesús Cisneros — COO'},{name:'Jaziel Flores',label:'Jaziel Flores — FDE'},{name:'Mario Hernandez',label:'Mario Hernandez — AI Eng'},{name:'Francisco Enriquez',label:'Francisco Enriquez — AI Eng'},{name:'Moisés Morillo',label:'Moisés Morillo — AI Platform'}];
+var selectedReps=[];
+function renderDropdown(){var dd=document.getElementById('msDropdown');var html='';for(var i=0;i<TEAM.length;i++){var t=TEAM[i];var sel=selectedReps.indexOf(t.name)>-1;html+='<div class="ms-option'+(sel?' selected':'')+'" onclick="toggleRep(\''+t.name.replace(/'/g,"\\'")+'\')">'+'<div class="ms-check">'+(sel?'✓':'')+'</div><span>'+t.label+'</span></div>'}dd.innerHTML=html}
+function renderSelected(){var box=document.getElementById('msSelected');if(selectedReps.length===0){box.innerHTML='';box.classList.add('empty');return}box.classList.remove('empty');var html='';for(var i=0;i<selectedReps.length;i++){html+='<div class="ms-chip"><span>'+selectedReps[i].split(' ')[0]+'</span><span class="ms-x" onclick="event.stopPropagation();removeRep(\''+selectedReps[i].replace(/'/g,"\\'")+'\')">&times;</span></div>'}box.innerHTML=html}
+function toggleDropdown(){document.getElementById('msDropdown').classList.toggle('on')}
+function toggleRep(name){var idx=selectedReps.indexOf(name);if(idx>-1)selectedReps.splice(idx,1);else selectedReps.push(name);renderDropdown();renderSelected()}
+function removeRep(name){var idx=selectedReps.indexOf(name);if(idx>-1)selectedReps.splice(idx,1);renderDropdown();renderSelected()}
+document.addEventListener('click',function(e){if(!e.target.closest('.ms-wrap'))document.getElementById('msDropdown').classList.remove('on')});
+renderDropdown();
+var daySelect=document.getElementById('deadlineDay'),monthSelect=document.getElementById('deadlineMonth');
+var months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+daySelect.innerHTML='<option value="">Día</option>';for(var d=1;d<=31;d++)daySelect.innerHTML+='<option value="'+d+'">'+d+'</option>';
+monthSelect.innerHTML='<option value="">Mes</option>';for(var m=0;m<months.length;m++)monthSelect.innerHTML+='<option value="'+(m+1)+'">'+months[m]+'</option>';
+var now=new Date();monthSelect.value=now.getMonth()+1;
+document.getElementById('hasDeadline').addEventListener('change',function(){document.getElementById('dateRow').style.display=this.checked?'flex':'none'});
+function guardarTask(){
+  var task=document.getElementById('taskTitle').value.trim(),desc=document.getElementById('taskDesc').value.trim(),err=false;
+  if(selectedReps.length===0){document.getElementById('msSelected').style.animation='shake 0.4s ease';setTimeout(function(){document.getElementById('msSelected').style.animation=''},600);err=true}
+  if(!task){shakeEl('taskTitle');err=true}
+  if(err)return;
+  var fechaLimite=null;
+  if(document.getElementById('hasDeadline').checked){var day=parseInt(daySelect.value),month=parseInt(monthSelect.value);if(day&&month){var year=now.getFullYear();if(month<now.getMonth()+1)year++;fechaLimite=year+'-'+(month<10?'0':'')+month+'-'+(day<10?'0':'')+day}}
+  var data={task:task,responsables:selectedReps.slice(),descripcion:desc,fecha_limite:fechaLimite,origen:'ROOT BiWeekly'};
+  if(WEBHOOK){fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){})}
+  var repsStr=selectedReps.map(function(n){return n.split(' ')[0]}).join(', ');
+  document.getElementById('taskTitle').value='';document.getElementById('taskDesc').value='';selectedReps=[];renderSelected();renderDropdown();
+  document.getElementById('hasDeadline').checked=false;document.getElementById('dateRow').style.display='none';
+  runDeploy(task+' → '+repsStr+(fechaLimite?' (📅 '+fechaLimite+')':''))}
+function runDeploy(label){
+  var bd=document.getElementById('deployBackdrop'),chip=document.getElementById('sheetChip'),chipLabel=document.getElementById('chipLabel');
+  var done=document.getElementById('sheetDone'),closeBtn=document.getElementById('sheetClose'),sc=document.getElementById('stepsContainer');
+  chip.className='sheet-chip';chipLabel.textContent='En proceso';done.classList.remove('on');closeBtn.classList.remove('on');
+  document.getElementById('doneSub').textContent=label;
+  var steps=[{name:'Validar datos del task',sub:'ROOT // BiWeekly'},{name:'Guardar en Notion',sub:'ROOT Tasks DB'},{name:'Asignar responsable(s)',sub:'Notificación programada'}];
+  var html='';for(var i=0;i<steps.length;i++){html+='<div class="step" id="ds'+i+'"><div class="step-ico" id="dsi'+i+'">'+IDLE+'</div><div class="step-body"><div class="step-name">'+steps[i].name+'</div><div class="step-sub">'+steps[i].sub+'</div></div><div class="step-ms" id="dsm'+i+'"></div></div>'}
+  sc.innerHTML=html;bd.classList.add('on');
+  var delays=[150,800,1600],dones=[700,1500,2200],ms=[412,1087,203];
+  for(var j=0;j<steps.length;j++){(function(idx){setTimeout(function(){document.getElementById('ds'+idx).classList.add('active');var ico=document.getElementById('dsi'+idx);ico.className='step-ico running';ico.innerHTML=SPIN},delays[idx]);setTimeout(function(){var ico=document.getElementById('dsi'+idx);ico.className='step-ico done';ico.innerHTML=CHECK;document.getElementById('dsm'+idx).textContent=ms[idx]+'ms'},dones[idx])})(j)}
+  setTimeout(function(){chip.classList.add('done');chipLabel.textContent='Completado';done.classList.add('on');closeBtn.classList.add('on')},2600)}
+function closeSheet(){document.getElementById('deployBackdrop').classList.remove('on')}
+function togglePending(){
+  var p=document.getElementById('pendingPanel');if(p.classList.contains('on')){p.classList.remove('on');return}
+  document.getElementById('pendingBody').innerHTML='<div class="pending-empty">Cargando tasks...</div>';p.classList.add('on');
+  if(!WEBHOOK){document.getElementById('pendingBody').innerHTML='<div class="pending-empty">⚠️ Webhook no configurado</div>';return}
+  fetch(WEBHOOK+'?action=pending').then(function(r){return r.json()}).then(function(d){
+    if(!d.tasks||d.tasks.length===0){document.getElementById('pendingBody').innerHTML='<div class="pending-empty">✅ No hay tasks pendientes</div>';return}
+    var html='',today=new Date();today.setHours(0,0,0,0);
+    for(var i=0;i<d.tasks.length;i++){var t=d.tasks[i];var statusClass='st-'+t.status.replace(/ /g,'-');var deadlineHtml='';
+      if(t.fecha_limite){var dl=new Date(t.fecha_limite+'T23:59:59'),diff=Math.ceil((dl-today)/86400000);
+        if(diff<0)deadlineHtml='<div class="pi-deadline overdue">🚨 Vencido hace '+Math.abs(diff)+' día(s)</div>';
+        else if(diff===0)deadlineHtml='<div class="pi-deadline">⚠️ Vence hoy</div>';
+        else if(diff<=3)deadlineHtml='<div class="pi-deadline">📅 Vence en '+diff+' día(s)</div>';
+        else deadlineHtml='<div class="pi-deadline" style="color:var(--text-3)">📅 '+t.fecha_limite+'</div>'}
+      html+='<div class="pending-item"><div class="pi-top"><span class="pi-task">'+t.task+'</span><span class="pi-status '+statusClass+'">'+t.status+'</span></div><div class="pi-reps">→ '+t.responsables.join(', ')+'</div>'+deadlineHtml+'</div>'}
+    html+='<a class="pending-notion-btn" href="'+NOTION_DB_URL+'" target="_blank">📋 Ver tablero completo en Notion</a>';
+    document.getElementById('pendingBody').innerHTML=html}).catch(function(){document.getElementById('pendingBody').innerHTML='<div class="pending-empty">❌ Error al cargar</div>'})}
+function shakeEl(id){var el=document.getElementById(id);el.style.borderColor='#b91c1c';el.style.animation='shake 0.4s ease';setTimeout(function(){el.style.borderColor='';el.style.animation=''},600)}
+</script>
+</body>
+</html>
