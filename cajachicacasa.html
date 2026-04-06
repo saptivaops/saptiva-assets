@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CASA JC 02">
+<title>CASA JC 02</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#faf9f7;--surface:#ffffff;--border:#e8e5e0;--border-input:#d0ccc5;
+  --focus:#2d8a56;--text:#1a1a18;--text-2:#6b6860;--text-3:#a09a90;
+  --green:#2d8a56;--green-light:#e8f5ee;--green-dark:#1e6b3f;
+  --red:#c0392b;--red-light:#fdecea;
+  --warn:#d4a017;--warn-bg:#fef9e7;--warn-border:#f7dc6f;
+  --r:10px;
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;font-feature-settings:'ss01','ss02'}
+.app{max-width:480px;margin:0 auto;background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+
+/* ── HEADER ── */
+.header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px 0}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-logo{height:22px;width:auto;display:block;object-fit:contain}
+.header-sep{width:1px;height:18px;background:var(--border)}
+.header-title{font-size:14px;font-weight:700;color:var(--text);letter-spacing:0.5px}
+.header-info{padding:8px 20px 12px;display:flex;align-items:center;justify-content:space-between}
+.header-period{display:flex;flex-direction:column;gap:1px}
+.header-period-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px}
+.header-period-dates{font-size:12px;font-weight:500;color:var(--text-2)}
+.budget-block{text-align:right}
+.budget-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px}
+.budget-value{font-size:16px;font-weight:700;color:var(--green-dark);letter-spacing:-0.3px;font-variant-numeric:tabular-nums}
+.budget-value.warn{color:var(--warn)}
+.budget-value.over{color:var(--red)}
+.header-bar{height:4px;background:#eae8e4}
+.header-bar-fill{height:100%;background:var(--green);transition:width 0.5s ease,background 0.3s}
+.header-bar-fill.warn{background:var(--warn)}
+.header-bar-fill.over{background:var(--red)}
+
+/* ── BODY ── */
+.body{padding:12px 20px 32px;display:flex;flex-direction:column;gap:0}
+.section{padding:10px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.field{margin-bottom:8px}
+.field:last-child{margin-bottom:0}
+.field input,.field textarea{width:100%;height:44px;padding:0 14px;background:var(--surface);border:1px solid var(--border-input);border-radius:var(--r);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;transition:border-color 0.15s,box-shadow 0.15s;outline:none;-webkit-appearance:none;appearance:none}
+.field input::placeholder,.field textarea::placeholder{color:var(--text-3);font-weight:400}
+.field input:focus,.field textarea:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(45,138,86,0.12)}
+.field textarea{height:60px;padding:10px 14px;resize:none;line-height:1.5}
+.field-monto{position:relative}
+.field-monto .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:600;color:var(--text-3);pointer-events:none}
+.field-monto input{padding-left:28px;font-weight:600;font-size:20px;font-variant-numeric:tabular-nums}
+
+/* ── AUTO-CAT BADGE ── */
+.auto-cat{display:none;margin-top:4px;font-size:12px;font-weight:600;color:var(--green-dark);padding:5px 12px;background:var(--green-light);border-radius:100px;width:fit-content}
+.auto-cat.on{display:inline-block;animation:fadeIn 0.2s ease}
+
+/* ── AUTOCOMPLETE DROPDOWN ── */
+.ac-list{display:none;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;max-height:180px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.ac-list.on{display:block;animation:fadeIn 0.15s ease}
+.ac-item{padding:10px 14px;font-size:14px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ac-item:last-child{border-bottom:none}
+.ac-item:active{background:var(--green-light)}
+.ac-item .ac-name{font-weight:500}
+.ac-item .ac-cat{font-size:11px;color:var(--text-3);font-weight:500}
+
+/* ── BUTTONS ── */
+.action-buttons{padding:16px 0 8px;display:flex;flex-direction:column;gap:8px}
+.btn-main{width:100%;height:50px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.15s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:active{transform:scale(0.98);background:var(--green-dark)}
+.btn-dark{width:100%;height:44px;background:#1a1a18;color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-dark:active{transform:scale(0.98);background:#333}
+.btn-ghost{width:100%;height:44px;background:var(--surface);color:var(--text-2);border:1.5px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-ghost:active{transform:scale(0.98);background:#f5f4f2}
+
+/* ── REPO PANEL ── */
+.repo-panel{display:none;padding:14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);margin-top:8px}
+.repo-panel.on{display:block;animation:fadeIn 0.2s ease}
+.repo-panel label{display:block;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.repo-panel .field{margin-bottom:10px}
+.repo-panel .field-monto input{font-size:18px}
+
+/* ── PREV WEEK ── */
+.prev-week-panel{display:none;padding:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);margin-top:8px}
+.prev-week-panel.on{display:block;animation:fadeIn 0.2s ease}
+.pw-header{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+.pw-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.pw-row:last-child{border-bottom:none}
+.pw-row .pw-label{color:var(--text-2);font-weight:500}
+.pw-row .pw-val{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+.pw-total{display:flex;justify-content:space-between;padding:10px 0 4px;font-size:15px;font-weight:700;color:var(--green-dark);border-top:2px solid var(--border)}
+.pw-notion-btn{display:block;width:100%;height:40px;margin-top:10px;background:#f5f4f2;color:var(--text-2);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;line-height:40px;text-align:center;transition:all 0.15s}
+.pw-notion-btn:active{background:#eae9e5}
+
+/* ── DEPLOY SHEET (animación estilo EvenTracker) ── */
+.deploy-backdrop{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center}
+.deploy-backdrop.on{display:flex}
+.deploy-sheet{width:100%;max-width:480px;background:var(--surface);border-radius:16px 16px 0 0;padding:24px 20px 32px;padding-bottom:max(32px,env(safe-area-inset-bottom));animation:sheetUp 0.3s cubic-bezier(0.34,1.2,0.64,1)}
+@keyframes sheetUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sheet-title{font-size:15px;font-weight:700;color:var(--text)}
+.sheet-chip{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:#fef3c7;border:1px solid #fde68a;color:#92400e;display:flex;align-items:center;gap:5px;transition:all 0.3s}
+.sheet-chip.done{background:var(--green-light);border-color:#bbf7d0;color:var(--green-dark)}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:blink 1s ease-in-out infinite}
+.sheet-chip.done .chip-dot{background:var(--green);animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.steps{display:flex;flex-direction:column;margin-bottom:16px}
+.step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);opacity:0.25;transition:opacity 0.35s ease}
+.step:last-child{border-bottom:none}
+.step.active{opacity:1}
+.step-ico{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--bg);transition:all 0.3s}
+.step-ico svg{width:13px;height:13px}
+.step-ico.running{background:#fef3c7}
+.step-ico.running svg{animation:spin 1s linear infinite;color:#f59e0b}
+.step-ico.done{background:var(--green-light)}
+.step-ico.done svg{color:var(--green)}
+.step-body{flex:1}
+.step-name{font-size:13px;font-weight:500;color:var(--text)}
+.step-sub{font-size:11px;color:var(--text-3);margin-top:1px}
+.step-ms{font-size:11px;color:var(--text-3);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
+.sheet-done{display:none;background:var(--green-light);border:1px solid #bbf7d0;border-radius:var(--r);padding:12px 14px;margin-bottom:14px;flex-direction:row;align-items:center;gap:12px;animation:fadeIn 0.3s ease}
+.sheet-done.on{display:flex}
+.sheet-done-ico{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.sheet-done-text{font-size:13px;font-weight:600;color:var(--green-dark)}
+.sheet-done-sub{font-size:11px;color:#065f46;margin-top:2px}
+.sheet-close{width:100%;height:44px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:6px;transition:all 0.15s}
+.sheet-close.on{display:flex}
+.sheet-close:active{background:var(--green-dark);transform:scale(0.98)}
+
+/* ── HISTORY ── */
+.history{margin-top:8px}
+.history-title{font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.history-item:last-child{border-bottom:none}
+.hi-left{display:flex;align-items:center;gap:10px}
+.hi-emoji{font-size:18px}
+.hi-name{font-size:13px;font-weight:500;color:var(--text)}
+.hi-cat{font-size:11px;color:var(--text-3)}
+.hi-amount{font-size:14px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-left">
+        <img src="https://raw.githubusercontent.com/jdjca/saptiva-assets/main/Saptiva%20AI%20logo_whitebg.PNG" alt="Saptiva AI" class="header-logo">
+        <div class="header-sep"></div>
+        <div class="header-title">CASA JC 02</div>
+      </div>
+      <div class="budget-block">
+        <div class="budget-label">Disponible</div>
+        <div class="budget-value" id="budgetValue">$5,000</div>
+      </div>
+    </div>
+    <div class="header-info">
+      <div class="header-period">
+        <span class="header-period-label">Periodo</span>
+        <span class="header-period-dates" id="periodDates">—</span>
+      </div>
+      <div class="budget-block">
+        <div class="budget-label">Gastado</div>
+        <div class="budget-value" id="spentValue" style="color:var(--text)">$0</div>
+      </div>
+    </div>
+    <div class="header-bar"><div class="header-bar-fill" id="barFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ═══ BODY ═══ -->
+  <div class="body">
+
+    <div class="section">
+      <div class="section-label">¿Cuánto gastaste?</div>
+      <div class="field field-monto"><span class="prefix">$</span><input type="number" id="monto" inputmode="decimal" placeholder="0.00" step="0.01" min="0"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">¿En qué?</div>
+      <div class="field"><input type="text" id="concepto" placeholder="Ej: Cloro, tortillas, foco baño" autocomplete="off"></div>
+      <div class="ac-list" id="acList"></div>
+      <div class="auto-cat" id="autoCat"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Notas <span style="font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></div>
+      <div class="field"><textarea id="notas" placeholder="Detalles adicionales..."></textarea></div>
+    </div>
+
+    <!-- ═══ ACTION BUTTONS (in body, not footer) ═══ -->
+    <div class="action-buttons">
+      <button class="btn-main" onclick="preGuardar()">✅ Registrar gasto</button>
+      <button class="btn-dark" onclick="toggleRepo()">🚨 Solicitar reposición urgente</button>
+      <div class="repo-panel" id="repoPanel">
+        <div class="field"><label>Cantidad que necesitas</label><div class="field-monto"><span class="prefix">$</span><input type="number" id="repoMonto" inputmode="decimal" placeholder="0.00" step="0.01" min="0"></div></div>
+        <div class="field"><label>Motivo</label><input type="text" id="repoMotivo" placeholder="Ej: Se acabó el presupuesto, falta gas"></div>
+        <button class="btn-dark" id="repoSend" onclick="enviarRepo()" style="margin-top:4px">Enviar solicitud a Jesús</button>
+      </div>
+      <button class="btn-ghost" onclick="togglePrevWeek()">📋 Registro semana anterior</button>
+      <div class="prev-week-panel" id="prevWeekPanel">
+        <div class="pw-header" id="pwHeader">—</div>
+        <div id="pwBody"><p style="font-size:13px;color:var(--text-3);padding:8px 0">No hay registros de la semana anterior.</p></div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="section history" id="historySection" style="display:none">
+      <div class="history-title">Últimos gastos de hoy</div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- ═══ DEPLOY SHEET — Animación tipo EvenTracker ═══ -->
+  <div class="deploy-backdrop" id="deployBackdrop">
+    <div class="deploy-sheet">
+      <div class="sheet-header">
+        <div class="sheet-title" id="sheetTitle">Registrando gasto</div>
+        <div class="sheet-chip" id="sheetChip"><div class="chip-dot" id="chipDot"></div><span id="chipLabel">En proceso</span></div>
+      </div>
+      <div class="steps" id="stepsContainer"></div>
+      <div class="sheet-done" id="sheetDone">
+        <div class="sheet-done-ico">✓</div>
+        <div><div class="sheet-done-text" id="doneText">Gasto registrado</div><div class="sheet-done-sub" id="doneSub"></div></div>
+      </div>
+      <button class="sheet-close" id="sheetClose" onclick="closeSheet()">✅ Cerrar y registrar otro</button>
+    </div>
+  </div>
+
+</div>
+<script>
+var WEBHOOK='';
+var NOTION_DB_URL='https://www.notion.so/5d624a7c1b8b4b1095d473a341f415d8';
+var BUDGET_WEEKLY=5000;
+var selectedCat=null;
+var todayExpenses=[];
+var spentThisSession=0;
+
+var IDLE='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg>';
+var SPIN='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1.5a5.5 5.5 0 1 1-5.5 5.5"/></svg>';
+var CHECK='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.5 7l2.5 2.5 4.5-5"/></svg>';
+
+// ============================================================
+// CATEGORIES — catálogo masivo
+// ============================================================
+var CATEGORIES=[
+{emoji:'🛒',label:'Súper / Mandado',cat:'Súper',keywords:[
+'super','suoer','siper','soriana','soryana','walmart','walmar','heb','chedraui','chedrahui','chedrawi','costco','cosco','costko','sams','sam','bodega aurrera','aurrera','aurera','oxxo','oxo','tienda','abarrotes','abarotes','mandado','mandao','despensa','despen',
+'verdura','verduras','berdura','berduras','fruta','frutas','jitomate','gitomate','tomate','cebolla','ceboya','sevolla','sebolla','ajo','chile','chiles','limon','limones','papa','papas','zanahoria','sanahoria','lechuga','lechugas','pepino','aguacate','aguacte','platano','platanos','manzana','manzanas','naranja','naranjas','uva','uvas','melon','sandia','pina','piña','mango','fresa','papaya',
+'carne','carnes','res','puerco','puerko','cerdo','serdo','pollo','poyo','pescado','pescao','camaron','camarones','jamon','xamon','salchicha','salchica','tocino','tosino','bistec','bistek','bisteck','milanesa','milaneza','molida','chorizo','choritzo','costilla','costiya',
+'leche','huevo','huevos','webos','guevo','guevos','queso','quesos','keso','crema','yogurt','yogur','yoghurt','mantequilla','mantekilla','mantekiya','jocoque',
+'pan','tortilla','tortillas','tortiya','tortiyas','tortila','tortilas','bolillo','bolilo','boliyo','telera','bimbo',
+'arroz','aros','arros','frijol','frijoles','frijol','frijol','lenteja','lentejas','pasta','sopa','sopas','spaguetti','espagueti','espaguetti','macarron','macarrones',
+'aceite','azeite','aseite','azucar','azukar','asucar','sal','harina','arina','maizena','maisena','avena','abena','granola',
+'atun','sardina','mayonesa','mayoneza','maionesa','mostaza','mostasa','ketchup','catsup','ketsup','salsa valentina','salsa maggi','consomé','consome','knorr','caldo',
+'cereal','sereal','galleta','galletas','gayeta','gayetas','chocolate','chocoate','chocolte','dulce','dulses','paleta',
+'jugo','jugos','refresco','refrezco','coca','pepsi','agua','garrafon','garafon','cafe','nescafe',
+'servilleta','servilletas','servieta','servietas','serviyeta','serviyetas','aluminio','plastico','bolsa de basura','bolsas basura']},
+{emoji:'🧹',label:'Limpieza',cat:'Limpieza',keywords:[
+'cloro','kloro','fabuloso','fabulozo','pinol','pino','ajax','ajaz','maestro limpio','mr musculo',
+'escoba','trapeador','trapeadro','recogedor','recojedro','cubeta','cubetaa','jerga','franela','trapo','trapos','microfibra',
+'limpieza','limpiesa','limpiexa','limpiador','desinfectante','desinfetante','desimfectante','lysol','antibacterial',
+'jabon','javon','xabon','jabon zote','jabon roma','detergente','deterjente','deterguente','ace','ariel','suavitel','suabitel','suavizante','suavisante','downy',
+'esponja','esponja','fibra','brillo','estropajo','estropaho',
+'bolsa basura','bolsas','desechable','desechables',
+'aromatizante','aromatisante','glade','air wick','ambientador',
+'toalla','toayas','toajas','papel higienico','papel iguienico','kleenex','papel de cocina',
+'blanqueador','blankeador','quitamanchas','kitamanchas','vanish','cloralex','clorales',
+'insecticida','insectisida','raid','baygon','trampa raton','veneno','beneno']},
+{emoji:'🔧',label:'Mantenimiento',cat:'Mantenimiento',keywords:[
+'foco','focos','foko','fokos','led','lampara','apagador','apagadro','contacto','contakto','extension','extencion','estencion','multicontacto',
+'pila','pilas','bateria','vateria',
+'cable','cables','cinta aislante','sinta aislante','cinta','taype','tape',
+'plomero','plomeria','yave','llave','llabe','tubo','tuberia','tubos','manguera','mangera','mangueras','conector','teflon','empaque','empake','valvula','balbula',
+'pintura','brocha','rodillo','lija','liha','resanador','masilla','masiya',
+'tornillo','torniyo','clavo','clavos','taquete','takete','ancla','chapa','cerradura','serradura','bisagra','visagra','rondana','tuerca',
+'silicon','silikon','pegamento','kola loka','kolaloka','resistol','resistol',
+'herramienta','erramienta','herrameinta','martillo','martiyo','desarmador','desarmadro','pinza','pinzas','llave inglesa','yave inglesa','taladro','broca','metro','flexometro',
+'bomba','bonba','filtro','filtros','filtro de agua',
+'aire','aire acondicionado','ayre','minisplit','mini split','control remoto',
+'vidrio','bidrio','espejo','espeho','mosquitero','moskitero','cortina','riel',
+'impermeabilizante','impermeabilisante','sellador','seyador','cemento','semento','mezcla','mescla','arena','grava','graba','tabique','tabike','block','blok',
+'cerrajero','serrajero','serahero','electricista','electrisista','albañil','albañi','albanil']},
+{emoji:'⛽',label:'Gas / Transporte',cat:'Gas/Gasolina',keywords:[
+'gas','cilindro','silindro','tanque','tanke','pipa','gas lp','gas natural','gasera',
+'gasolina','gasolinera','magna','premium','diesel','disel',
+'estacionamiento','estasionamiento','parquimetro','parkimetro',
+'caseta','cazeta','peaje','peage','autopista',
+'uber','didi','taxi','taksi','camion','camiones','pasaje','pasages','transporte','trasporte',
+'aceite motor','afinacion','afinasion','llanta','yanta','llantas','yantas','refaccion','refaccion','mecanico','mekaniko','lavado auto','autolavado']},
+{emoji:'💊',label:'Farmacia / Salud',cat:'Farmacia',keywords:[
+'farmacia','farmasia','farma','guadalajara','similares','similarez','benavides','benavides','sanborns',
+'medicina','medisina','medicamento','medikamento','receta','reseta',
+'pastilla','pastillas','pastiya','pastiyas','tableta','capsula',
+'jarabe','jarabe','antigripal','antrigipal','paracetamol','parasetamol','ibuprofeno','ibuprofen','aspirina','naproxeno',
+'curita','kuritas','venda','gasa','algodon','algodn','alcohol','alkohol','agua oxigenada','isodine','merthiolate',
+'vitamina','vitaminas','bitamina','bitaminas','suplemento',
+'termometro','oximetro','doctor','doktor','consulta','konsulta','laboratorio','analisis','analicis',
+'dentista','oculista','lentes','optica','optika']},
+{emoji:'🐕',label:'Mascotas',cat:'Mascotas',keywords:[
+'croqueta','croquetas','kroqueta','kroquetas','croketa','croketas','dog chow','pedigree','royal canin','proplan','whiskas','felix',
+'perro','pero','gato','mascota','mascotas','maskota','maskotas',
+'veterinario','veterinario','beterinario','vet','vacuna','bakuna','desparasitante','pulga','garrapata',
+'arena','arena para gato',
+'hueso','gueso','juguete mascota','correa','collar','plato mascota','comedero','bebedero',
+'shampoo mascota','estetica canina','grooming',
+'pecera','pesera','pez','alimento pez','tortuga','pajaro','paharo','alpiste']},
+{emoji:'🍽️',label:'Comida preparada',cat:'Comida',keywords:[
+'comida','comidaa','restaurante','restautante','restoran','fonda','cocina economica','buffet','bufe','bufet',
+'pizza','piza','pitsa','little caesars','dominos','pizza hut',
+'pollo frito','poyo frito','kfc','bachoco',
+'tacos','takos','taqueria','takeria','birria','viria','barbacoa','barbakoa','carnitas','karnitas','pastor',
+'tortas','gorditas','gorditas','sopes','quesadilla','quesadiya','kesadilla','kesadiya','tamales','tamale','pozole','posole','menudo','enchiladas','enchilads',
+'sushi','suchi','hamburguesa','hamburgueza','amburguesa','amburgesa','burger king','mcdonalds','carls jr','wendys','subway','sobway',
+'lonche','lonch','lunch','antojito','antojitos','antogitos',
+'desayuno','desalluno','almuerzo','almueso','cena','sena','merienda',
+'pastel','panaderia','pan dulce','dona','rosca',
+'helado','elado','paleta','nieve','niebe',
+'rappi','rapi','uber eats','didi food']},
+{emoji:'💡',label:'Servicios / Recibos',cat:'Servicios',keywords:[
+'luz','lus','cfe','comision federal','electricidad','elektrisidad','medidor',
+'agua','jmas','jmapa','cea','agua potable',
+'internet','interneth','telmex','izzi','izi','megacable','megakable','totalplay','wifi','waifi',
+'telefono','selular','celular','telcel','at&t','movistar','recarga','recargas','plan','datos',
+'cable','television','telebision','streaming','netflix','nefli','spotify','espotifai',
+'recibo','resibo','pago','servicio','servisio','mensualidad','mensualida',
+'basura','recoleccion','recoleksion','predial','impuesto','inpuesto']},
+{emoji:'🏠',label:'Hogar',cat:'Hogar',keywords:[
+'almohada','almoada','cobija','cobiha','sabana','savana','colcha','edredon','toalla de baño','toaya','tapete',
+'plato','platos','vaso','vasos','taza','tazas','cuchara','cucharas','tenedor','cuchillo','cuchiyo','olla','ollas','sarten','sarten','cacerola','caserola','comal','licuadora','likuadora','tostador',
+'mop','bote basura',
+'planta','plantas','maceta','maseta','tierra','abono','fertilizante','fertilisante','manguera jardin','jardinero','hardinero','poda','pasto',
+'decoracion','dekorasion','cuadro','adorno','florero','vela','veladora',
+'organizador','caja','gancho','percha','canasta','kanasta',
+'llave','yave','copia llave','duplicado',
+'mudanza','flete','acarreo','acareo']},
+{emoji:'👕',label:'Ropa / Personal',cat:'Personal',keywords:[
+'ropa','camisa','camisas','pantalon','pantalones','short','calcetines','calsertines','calcetines','calzones','calsones','interior','camiseta','camiseta','playera',
+'zapatos','sapatos','tenis','huarache','guarache','sandalias','chancleta','chanclas',
+'lavanderia','labanderia','tintoreria','planchado','costura','kostura',
+'shampoo','champu','shampu','acondicionador','acondisionador','jabon de baño','javon','crema','desodorante','desorante','rastrillo','rastriyo','pasta de dientes','cepillo','sepiyo','hilo dental','enjuague bucal',
+'peluqueria','pelukeria','corte','barberia','barveria','estetica','estetika','perfume','locion','losion']},
+{emoji:'📦',label:'Varios',cat:'Varios',keywords:[
+'varios','barios','otro','otro gasto','miscelaneo',
+'regalo','envio','envio','paquete','pakete','mensajeria','correo','estafeta','fedex','dhl',
+'mercado','merkado','tianguis','tiangis','feria','bazar','basar',
+'papeleria','cuaderno','kuaderno','pluma','lapiz','lapis','cinta','folder','impresion','impresion','copia','copias',
+'juguete','juguetes','huguete','piñata','piñata','fiesta','globo','mantel',
+'propina','donacion','donasion','limosna','cooperacion','cooperasion','cuota','kouta']},
+];
+
+// ============================================================
+// PERIOD
+// ============================================================
+function getWeekDates(off){var n=new Date();n.setDate(n.getDate()+(off||0)*7);var d=n.getDay(),dm=d===0?-6:1-d;var m=new Date(n);m.setDate(n.getDate()+dm);var s=new Date(m);s.setDate(m.getDate()+6);return{mon:m,sun:s}}
+function fmtRange(d){var o={day:'numeric',month:'short'};return d.mon.toLocaleDateString('es-MX',o)+' — '+d.sun.toLocaleDateString('es-MX',o)}
+document.getElementById('periodDates').textContent=fmtRange(getWeekDates(0));
+
+// ============================================================
+// HISTORIAL DE CONCEPTOS — para autocomplete
+// ============================================================
+function getConceptHistory(){try{return JSON.parse(localStorage.getItem('ccc_concepts')||'[]')}catch(e){return[]}}
+function saveConceptToHistory(concepto,cat){
+  var hist=getConceptHistory();
+  // Normalizar: primera letra mayúscula, resto lowercase
+  var norm=concepto.charAt(0).toUpperCase()+concepto.slice(1).toLowerCase();
+  // Buscar si ya existe (case insensitive)
+  var found=false;
+  for(var i=0;i<hist.length;i++){if(hist[i].name.toLowerCase()===norm.toLowerCase()){hist[i].count++;hist[i].cat=cat;found=true;break}}
+  if(!found)hist.push({name:norm,cat:cat,count:1});
+  // Ordenar por frecuencia desc
+  hist.sort(function(a,b){return b.count-a.count});
+  // Máximo 100 conceptos
+  if(hist.length>100)hist=hist.slice(0,100);
+  try{localStorage.setItem('ccc_concepts',JSON.stringify(hist))}catch(e){}
+}
+
+// ============================================================
+// AUTO-CATEGORIZACIÓN + AUTOCOMPLETE
+// ============================================================
+document.getElementById('concepto').addEventListener('input',function(){
+  var v=this.value.trim().toLowerCase(),b=document.getElementById('autoCat'),acList=document.getElementById('acList');
+  if(v.length<2){b.classList.remove('on');acList.classList.remove('on');acList.innerHTML='';selectedCat=null;return}
+
+  // 1. Buscar en historial de conceptos previos
+  var hist=getConceptHistory();
+  var matches=[];
+  for(var h=0;h<hist.length;h++){
+    if(hist[h].name.toLowerCase().indexOf(v)>-1){
+      matches.push(hist[h]);
+    }
+  }
+
+  // Mostrar autocomplete si hay matches del historial
+  if(matches.length>0){
+    var html='';
+    var shown=matches.slice(0,5);
+    for(var m=0;m<shown.length;m++){
+      var emoji='📦';
+      for(var ci=0;ci<CATEGORIES.length;ci++){if(CATEGORIES[ci].cat===shown[m].cat){emoji=CATEGORIES[ci].emoji;break}}
+      html+='<div class="ac-item" onclick="pickAutocomplete(\''+shown[m].name.replace(/'/g,"\\'")+'\',\''+shown[m].cat.replace(/'/g,"\\'")+'\')"><span class="ac-name">'+shown[m].name+'</span><span class="ac-cat">'+emoji+' '+shown[m].cat+'</span></div>';
+    }
+    acList.innerHTML=html;acList.classList.add('on');
+  } else {
+    acList.classList.remove('on');acList.innerHTML='';
+  }
+
+  // 2. Auto-categorizar por keywords (siempre corre, independiente del autocomplete)
+  var best=null,bs=0;
+  for(var i=0;i<CATEGORIES.length;i++){var c=CATEGORIES[i];for(var k=0;k<c.keywords.length;k++){var kw=c.keywords[k],sc=0;
+    if(v===kw)sc=10;else if(v.indexOf(kw)>-1)sc=5+kw.length;else if(kw.indexOf(v)>-1)sc=3+v.length;else if(v.length>=3&&kw.substring(0,v.length)===v)sc=2;
+    if(sc>bs){bs=sc;best=c}}}
+  if(best&&bs>=2){selectedCat=best.cat;b.textContent=best.emoji+' '+best.label;b.classList.add('on')}else{selectedCat=null;b.classList.remove('on')}
+});
+
+function pickAutocomplete(name,cat){
+  document.getElementById('concepto').value=name;
+  selectedCat=cat;
+  var b=document.getElementById('autoCat');
+  var emoji='📦';
+  for(var i=0;i<CATEGORIES.length;i++){if(CATEGORIES[i].cat===cat){emoji=CATEGORIES[i].emoji;b.textContent=emoji+' '+CATEGORIES[i].label;break}}
+  b.classList.add('on');
+  document.getElementById('acList').classList.remove('on');
+  document.getElementById('acList').innerHTML='';
+  // Focus al siguiente campo
+  document.getElementById('notas').focus();
+}
+
+// Cerrar autocomplete al hacer click fuera
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#concepto')&&!e.target.closest('#acList')){
+    document.getElementById('acList').classList.remove('on');
+  }
+});
+
+// ============================================================
+// DEPLOY ANIMATION — gasto
+// ============================================================
+function runDeploy(type,label){
+  var bd=document.getElementById('deployBackdrop');
+  var chip=document.getElementById('sheetChip'),chipLabel=document.getElementById('chipLabel'),chipDot=document.getElementById('chipDot');
+  var done=document.getElementById('sheetDone'),closeBtn=document.getElementById('sheetClose');
+  var sc=document.getElementById('stepsContainer');
+
+  chip.className='sheet-chip';chipLabel.textContent='En proceso';
+  done.classList.remove('on');closeBtn.classList.remove('on');
+
+  var steps;
+  if(type==='gasto'){
+    document.getElementById('sheetTitle').textContent='Registrando gasto';
+    document.getElementById('doneText').textContent='Gasto registrado';
+    document.getElementById('doneSub').textContent=label;
+    document.getElementById('sheetClose').textContent='✅ Cerrar y registrar otro';
+    steps=[{name:'Validar datos del gasto',sub:'CajaChicaCasa'},{name:'Guardar en base de datos',sub:'Notion · Gastos Caja Chica'},{name:'Verificar presupuesto semanal',sub:'$5,000 MXN · Semana actual'},{name:'Actualizar saldo disponible',sub:'Listo'}];
+  } else {
+    document.getElementById('sheetTitle').textContent='Enviando solicitud';
+    document.getElementById('doneText').textContent='Solicitud enviada';
+    document.getElementById('doneSub').textContent=label;
+    document.getElementById('sheetClose').textContent='✅ Cerrar';
+    steps=[{name:'Preparar solicitud',sub:'CajaChicaCasa'},{name:'Enviar notificación por Slack',sub:'DM → Jesús Cisneros'},{name:'Confirmar entrega',sub:'Listo'}];
+  }
+
+  var html='';
+  for(var i=0;i<steps.length;i++){
+    html+='<div class="step" id="ds'+i+'"><div class="step-ico" id="dsi'+i+'">'+IDLE+'</div><div class="step-body"><div class="step-name">'+steps[i].name+'</div><div class="step-sub">'+steps[i].sub+'</div></div><div class="step-ms" id="dsm'+i+'"></div></div>';
+  }
+  sc.innerHTML=html;
+  bd.classList.add('on');
+
+  var delays=type==='gasto'?[150,900,1800,2600]:[150,800,1600];
+  var dones=type==='gasto'?[800,1700,2500,3200]:[700,1500,2200];
+  var ms=type==='gasto'?[687,1243,412,89]:[312,876,54];
+
+  for(var j=0;j<steps.length;j++){
+    (function(idx){
+      setTimeout(function(){document.getElementById('ds'+idx).classList.add('active');var ico=document.getElementById('dsi'+idx);ico.className='step-ico running';ico.innerHTML=SPIN},delays[idx]);
+      setTimeout(function(){var ico=document.getElementById('dsi'+idx);ico.className='step-ico done';ico.innerHTML=CHECK;document.getElementById('dsm'+idx).textContent=ms[idx]+'ms'},dones[idx]);
+    })(j);
+  }
+
+  var totalTime=dones[dones.length-1]+400;
+  setTimeout(function(){
+    chip.classList.add('done');chipLabel.textContent='Completado';
+    done.classList.add('on');closeBtn.classList.add('on');
+  },totalTime);
+}
+
+function closeSheet(){
+  document.getElementById('deployBackdrop').classList.remove('on');
+}
+
+// ============================================================
+// PRE-GUARDAR + GUARDAR
+// ============================================================
+function preGuardar(){
+  var m=parseFloat(document.getElementById('monto').value),c=document.getElementById('concepto').value.trim(),err=false;
+  if(!m||m<=0){shakeEl('monto');err=true}
+  if(!c){shakeEl('concepto');err=true}
+  if(err)return;
+  if(!selectedCat)selectedCat='Varios';
+  guardar(m,c);
+}
+function guardar(monto,concepto){
+  var notas=document.getElementById('notas').value.trim();
+  var catLabel=selectedCat;for(var i=0;i<CATEGORIES.length;i++){if(CATEGORIES[i].cat===selectedCat){catLabel=CATEGORIES[i].emoji+' '+CATEGORIES[i].label;break}}
+  var data={concepto:concepto,monto:monto,categoria:selectedCat,notas:notas,fecha:new Date().toISOString().split('T')[0],timestamp:new Date().toISOString()};
+  if(WEBHOOK){fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){})}
+  // Guardar concepto normalizado en historial para autocomplete futuro
+  saveConceptToHistory(concepto,selectedCat);
+  todayExpenses.unshift({concepto:concepto,monto:monto,cat:selectedCat,time:new Date()});
+  updateHistory();spentThisSession+=monto;updateBudget();saveToPrevWeekCache(data);
+  document.getElementById('monto').value='';document.getElementById('concepto').value='';document.getElementById('notas').value='';
+  document.getElementById('autoCat').classList.remove('on');document.getElementById('acList').classList.remove('on');document.getElementById('acList').innerHTML='';selectedCat=null;
+  runDeploy('gasto','$'+monto.toLocaleString('es-MX',{minimumFractionDigits:2})+' — '+concepto+' ('+catLabel+')');
+}
+
+// ============================================================
+// BUDGET
+// ============================================================
+function updateBudget(){
+  var rem=BUDGET_WEEKLY-spentThisSession,pct=Math.min((spentThisSession/BUDGET_WEEKLY)*100,100);
+  var bv=document.getElementById('budgetValue'),sv=document.getElementById('spentValue'),fill=document.getElementById('barFill');
+  sv.textContent='$'+Math.round(spentThisSession).toLocaleString('es-MX');fill.style.width=pct+'%';
+  bv.className='budget-value';fill.className='header-bar-fill';
+  if(rem<=0){bv.textContent='⚠️ $0';bv.classList.add('over');fill.classList.add('over')}
+  else if(rem<1000){bv.textContent='$'+Math.round(rem).toLocaleString('es-MX');bv.classList.add('warn');fill.classList.add('warn')}
+  else{bv.textContent='$'+Math.round(rem).toLocaleString('es-MX')}
+}
+
+// ============================================================
+// HISTORY
+// ============================================================
+function updateHistory(){
+  if(!todayExpenses.length)return;document.getElementById('historySection').style.display='block';
+  var html='',items=todayExpenses.slice(0,5);
+  for(var i=0;i<items.length;i++){var e=items[i],emoji='📦';
+    for(var c=0;c<CATEGORIES.length;c++){if(CATEGORIES[c].cat===e.cat){emoji=CATEGORIES[c].emoji;break}}
+    var h=e.time.getHours(),m=e.time.getMinutes(),t=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
+    html+='<div class="history-item"><div class="hi-left"><span class="hi-emoji">'+emoji+'</span><div><div class="hi-name">'+e.concepto+'</div><div class="hi-cat">'+e.cat+' · '+t+'</div></div></div><div class="hi-amount">$'+e.monto.toLocaleString('es-MX',{minimumFractionDigits:2})+'</div></div>'}
+  document.getElementById('historyList').innerHTML=html;
+}
+
+// ============================================================
+// REPOSICIÓN URGENTE
+// ============================================================
+function toggleRepo(){document.getElementById('repoPanel').classList.toggle('on');if(document.getElementById('repoPanel').classList.contains('on'))setTimeout(function(){document.getElementById('repoMonto').focus()},200)}
+function enviarRepo(){
+  var m=parseFloat(document.getElementById('repoMonto').value),mot=document.getElementById('repoMotivo').value.trim();
+  if(!m||m<=0){shakeEl('repoMonto');return}if(!mot){shakeEl('repoMotivo');return}
+  if(WEBHOOK){fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reposicion_urgente',monto:m,motivo:mot,timestamp:new Date().toISOString()})}).catch(function(){})}
+  document.getElementById('repoMonto').value='';document.getElementById('repoMotivo').value='';
+  document.getElementById('repoPanel').classList.remove('on');
+  runDeploy('repo','$'+m.toLocaleString('es-MX',{minimumFractionDigits:2})+' — '+mot);
+}
+
+// ============================================================
+// PREV WEEK
+// ============================================================
+function getISOWeek(d){var dt=new Date(d.getTime());dt.setHours(0,0,0,0);dt.setDate(dt.getDate()+3-(dt.getDay()+6)%7);var w1=new Date(dt.getFullYear(),0,4);return 1+Math.round(((dt.getTime()-w1.getTime())/86400000-3+(w1.getDay()+6)%7)/7)}
+function weekKey(off){var d=new Date();d.setDate(d.getDate()+(off||0)*7);var w=getISOWeek(d);return d.getFullYear()+'-W'+(w<10?'0':'')+w}
+function saveToPrevWeekCache(data){try{var k='ccc_'+weekKey(0),a=JSON.parse(localStorage.getItem(k)||'[]');a.push({concepto:data.concepto,monto:data.monto,cat:data.categoria,fecha:data.fecha});localStorage.setItem(k,JSON.stringify(a))}catch(e){}}
+function togglePrevWeek(){
+  var p=document.getElementById('prevWeekPanel');if(p.classList.contains('on')){p.classList.remove('on');return}
+  var pd=getWeekDates(-1);document.getElementById('pwHeader').textContent='Semana: '+fmtRange(pd);
+  var k='ccc_'+weekKey(-1),arr=[];try{arr=JSON.parse(localStorage.getItem(k)||'[]')}catch(e){}
+  if(!arr.length){document.getElementById('pwBody').innerHTML='<p style="font-size:13px;color:var(--text-3);padding:8px 0">No hay registros de la semana anterior.</p>'}
+  else{var total=0,byCat={};for(var i=0;i<arr.length;i++){total+=arr[i].monto;byCat[arr[i].cat]=(byCat[arr[i].cat]||0)+arr[i].monto}
+    var cats=Object.keys(byCat).sort(function(a,b){return byCat[b]-byCat[a]});var html='';
+    for(var c=0;c<cats.length;c++){var em='📦';for(var j=0;j<CATEGORIES.length;j++){if(CATEGORIES[j].cat===cats[c]){em=CATEGORIES[j].emoji;break}}
+      var pct=Math.round((byCat[cats[c]]/total)*100);
+      html+='<div class="pw-row"><span class="pw-label">'+em+' '+cats[c]+'</span><span class="pw-val">$'+byCat[cats[c]].toLocaleString('es-MX')+' <span style="font-weight:400;color:var(--text-3);font-size:11px">('+pct+'%)</span></span></div>'}
+    html+='<div class="pw-total"><span>Total ('+arr.length+' gastos)</span><span>$'+total.toLocaleString('es-MX')+'</span></div>';
+    html+='<a class="pw-notion-btn" href="'+NOTION_DB_URL+'" target="_blank">📋 Ver detalle completo en Notion</a>';
+    document.getElementById('pwBody').innerHTML=html}
+  p.classList.add('on');
+}
+
+function shakeEl(id){var el=document.getElementById(id);el.style.borderColor='#c0392b';el.style.animation='shake 0.4s ease';setTimeout(function(){el.style.borderColor='';el.style.animation=''},600)}
+</script>
+</body>
+</html>
