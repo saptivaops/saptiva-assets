@@ -2,507 +2,257 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="EvenTracker">
-<link rel="apple-touch-icon" href="https://saptivaops.github.io/saptiva-assets/saptiva_logo_small_Square.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>EvenTracker</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Scout">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<title>Scout</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#f5f6f7;
-  --surface:#ffffff;
-  --border:#e4e6e9;
-  --border-input:#d0d5dd;
-  --focus:#00c060;
-  --text:#111827;
-  --text-2:#6b7280;
-  --text-3:#9ca3af;
-  --green:#71f3d3;
-  --green-bg:#f0fefb;
-  --green-dark:#0a7a5a;
-  --warn:#d97706;
-  --warn-bg:#fffbeb;
-  --warn-border:#fde68a;
-  --r:6px;
-}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-.app{max-width:480px;margin:0 auto;background:var(--bg)}
-
-/* TOPBAR */
-.topbar{
-  height:52px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-}
-.topbar-left{display:flex;align-items:center;gap:8px}
-.topbar-logo{height:26px;width:auto;display:block;object-fit:contain}
-.topbar-sep{width:1px;height:16px;background:var(--border)}
-.topbar-title{font-size:13px;font-weight:500;color:var(--text-2);letter-spacing:-0.1px}
-.rep-badge{
-  font-size:11px;font-weight:600;color:var(--green-dark);
-  background:var(--green-bg);border:1px solid #bbf7d0;
-  padding:3px 9px;border-radius:100px;letter-spacing:0.2px;
-}
-
-/* BODY */
-.body{padding:8px 20px 0;display:flex;flex-direction:column;gap:0}
-
-/* SECTION */
-.section{padding:8px 0;border-bottom:1px solid var(--border)}
-.section:last-child{border-bottom:none;padding-bottom:0}
-.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:6px}
-
-/* FIELDS */
-.field{margin-bottom:6px}
-.field:last-child{margin-bottom:0}
-.field input,.field textarea{
-  width:100%;
-  height:32px;
-  padding:0 12px;
-  background:var(--surface);
-  border:1px solid var(--border-input);
-  border-radius:var(--r);
-  color:var(--text);
-  font-family:'Inter',sans-serif;
-  font-size:14px;
-  transition:border-color 0.15s,box-shadow 0.15s;
-  outline:none;
-  -webkit-appearance:none;
-}
+:root{--bg:#0e0e0c;--surface:#1a1a18;--surface2:#222220;--border:#2a2a28;--text:#f5f5f3;--text-2:#a0a098;--text-3:#6b6b65;--accent:#00e68a;--accent-dark:#00b86e;--accent-light:rgba(0,230,138,0.1);--r:10px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased}
+.app{max-width:480px;margin:0 auto}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:10}
+.header-top{display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-logo{height:22px;filter:brightness(10)}
+.header-sep{width:1px;height:20px;background:var(--border)}
+.header-title{font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px}
+.header-sub{font-size:11px;color:var(--text-3);margin-top:2px}
+.rep-badge{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:100px}
+.body{padding:16px 20px 40px;display:flex;flex-direction:column;gap:12px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.field input,.field textarea,.field select{width:100%;height:44px;padding:0 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;outline:none;-webkit-appearance:none;transition:border-color 0.15s}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
 .field input::placeholder,.field textarea::placeholder{color:var(--text-3)}
-.field input:focus,.field textarea:focus{
-  border-color:var(--focus);
-  box-shadow:0 0 0 3px rgba(0,192,96,0.12);
-}
-.field textarea{height:52px;padding:8px 12px;resize:none;line-height:1.5}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.field-hint{font-size:11px;color:var(--warn);margin-top:4px;font-weight:500}
-
-.dup-warn{
-  display:none;background:var(--warn-bg);border:1px solid var(--warn-border);
-  border-radius:var(--r);padding:8px 12px;font-size:12px;color:var(--warn);
-  line-height:1.5;margin-top:8px;
-}
-.dup-warn.show{display:block}
-
-/* BOTTOM */
-.save-btn{
-  width:100%;height:40px;
-  background:#71f3d3;color:#0a1a14;
-  border:none;border-radius:var(--r);
-  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;letter-spacing:-0.1px;
-  transition:background 0.15s,transform 0.1s;
-}
-.save-btn:active{background:#4de8c0;transform:scale(0.99)}
-.save-btn:hover{background:#4de8c0;}
-.hint{font-size:11px;color:var(--text-3);text-align:center;margin-top:6px}
-
-.social-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
-.sb{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:7px 4px;
-  background:#111827;border:1px solid #1f2937;border-radius:var(--r);
-  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;color:#9ca3af;
-  cursor:pointer;transition:all 0.15s;
-}
-.sb:hover{border-color:#00c060;color:#fff;}
-.sb:active{transform:scale(0.97)}
-.sb .ic{font-size:15px}
-.sb.off{opacity:0.3;pointer-events:none;cursor:default}
-
+.field textarea{height:60px;padding:10px 14px;resize:none;line-height:1.5}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%236b6b65' d='M5 7L1 3h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.row-2{display:flex;gap:8px}.row-2 .field{flex:1}
+.dup-warn{display:none;padding:10px 14px;background:rgba(255,180,0,0.1);border:1px solid rgba(255,180,0,0.3);border-radius:var(--r);font-size:12px;color:#ffb400;margin-top:-4px}.dup-warn.on{display:block}
+.btn-save{width:100%;height:52px;background:var(--accent);color:var(--bg);border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;margin-top:4px}.btn-save:active{transform:scale(0.98);background:var(--accent-dark)}
+.divider{height:1px;background:var(--border);margin:8px 0}
+.section-title{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.tools-grid{display:flex;flex-direction:column;gap:8px}
+.tool-btn{width:100%;height:46px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;text-decoration:none}.tool-btn:active{transform:scale(0.98);background:var(--surface2)}
+.tool-btn.accent{border-color:var(--accent);color:var(--accent)}
+.qr-section{display:flex;gap:8px;flex-wrap:wrap}
+.qr-btn{flex:1;min-width:calc(50% - 4px);height:44px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}.qr-btn:active{background:var(--surface2)}
+/* PANELS */
+.panel{display:none;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-top:4px}.panel.on{display:block;animation:fadeIn 0.2s ease}
+.panel input{margin-bottom:8px}
+.panel .btn-go{width:100%;height:44px;background:var(--accent);color:var(--bg);border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer}.panel .btn-go:active{background:var(--accent-dark)}
+/* MEET PANEL */
+.meet-options{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.meet-opt{width:100%;height:44px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}.meet-opt:active{background:var(--border)}
+/* INTRO PANEL */
+.intro-ms-wrap{position:relative;margin-bottom:8px}
+.intro-ms-selected{display:flex;flex-wrap:wrap;gap:4px;min-height:44px;padding:6px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;align-items:center}.intro-ms-selected.empty::after{content:'Selecciona rep(s)';color:var(--text-3);font-size:14px}
+.intro-chip{font-size:12px;font-weight:600;padding:3px 8px;border-radius:4px;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;gap:4px}.intro-chip .ix{cursor:pointer;opacity:0.6;font-size:14px}
+.intro-dd{display:none;position:absolute;top:100%;left:0;right:0;margin-top:4px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);max-height:200px;overflow-y:auto;z-index:50}.intro-dd.on{display:block}
+.intro-opt{padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;color:var(--text)}.intro-opt:last-child{border-bottom:none}.intro-opt:active{background:var(--accent-light)}.intro-opt.selected{color:var(--accent);font-weight:600}
+.intro-chk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}.intro-opt.selected .intro-chk{background:var(--accent);border-color:var(--accent);color:var(--bg)}
 /* QR MODAL */
-.qr-backdrop{
-  position:fixed;inset:0;background:rgba(17,24,39,0.5);
-  z-index:300;display:none;align-items:center;justify-content:center;
-  padding:24px;backdrop-filter:blur(4px);
-}
-.qr-backdrop.on{display:flex;animation:fadeIn 0.2s ease}
-.qr-card{
-  background:var(--surface);border-radius:12px;padding:24px;
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  max-width:260px;width:100%;
-  box-shadow:0 20px 40px rgba(0,0,0,0.15);
-}
-.qr-name{font-size:13px;font-weight:600;color:var(--text-2);text-align:center}
-.qr-close{
-  width:100%;height:34px;background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--r);font-family:'Inter',sans-serif;font-size:13px;
-  font-weight:500;color:var(--text-2);cursor:pointer;margin-top:2px;
-}
-#qr-canvas canvas,#qr-canvas img{border-radius:6px;display:block}
-
+.qr-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.8);align-items:center;justify-content:center}.qr-modal.on{display:flex}
+.qr-modal-box{background:var(--surface);border-radius:16px;padding:24px;text-align:center;max-width:320px;width:90%}
+.qr-modal-box img{width:200px;height:200px;margin:12px auto;display:block;border-radius:8px}
+.qr-modal-box p{font-size:13px;color:var(--text-2);margin-top:8px}
+.qr-modal-close{width:100%;height:40px;background:var(--border);color:var(--text);border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px}
 /* DEPLOY SHEET */
-.deploy-backdrop{
-  position:fixed;inset:0;background:rgba(17,24,39,0.45);
-  z-index:200;display:none;align-items:flex-end;justify-content:center;
-  backdrop-filter:blur(4px);
-}
-.deploy-backdrop.on{display:flex;animation:fadeIn 0.2s ease}
-.deploy-sheet{
-  width:100%;max-width:480px;
-  background:var(--surface);
-  border-radius:16px 16px 0 0;
-  padding:24px 20px 32px;
-  animation:slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1);
-}
-@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Sheet header */
-.sheet-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.sheet-title{font-size:15px;font-weight:600;color:var(--text)}
-.sheet-chip{
-  font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;
-  background:#fef3c7;border:1px solid #fde68a;color:#92400e;
-  display:flex;align-items:center;gap:5px;
-  transition:all 0.3s;
-}
-.sheet-chip.done{background:var(--green-bg);border-color:#bbf7d0;color:var(--green-dark)}
-.chip-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:blink 1s ease-in-out infinite}
-.sheet-chip.done .chip-dot{background:var(--green);animation:none}
+.deploy-backdrop{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center}.deploy-backdrop.on{display:flex}
+.deploy-sheet{width:100%;max-width:480px;background:var(--surface);border-radius:16px 16px 0 0;padding:24px 20px 32px;padding-bottom:max(32px,env(safe-area-inset-bottom));animation:sheetUp 0.3s cubic-bezier(0.34,1.2,0.64,1)}
+@keyframes sheetUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.sheet-title{font-size:15px;font-weight:700}.sheet-chip{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:rgba(255,180,0,0.15);border:1px solid rgba(255,180,0,0.3);color:#ffb400;display:flex;align-items:center;gap:5px}.sheet-chip.done{background:var(--accent-light);border-color:rgba(0,230,138,0.3);color:var(--accent)}.chip-dot{width:6px;height:6px;border-radius:50%;background:#ffb400;animation:blink 1s infinite}.sheet-chip.done .chip-dot{background:var(--accent);animation:none}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-
-/* Steps */
-.steps{display:flex;flex-direction:column;margin-bottom:16px}
-.step{
-  display:flex;align-items:center;gap:12px;
-  padding:10px 0;border-bottom:1px solid var(--border);
-  opacity:0.25;transition:opacity 0.35s ease;
-}
-.step:last-child{border-bottom:none}
-.step.active{opacity:1}
-.step-ico{
-  width:26px;height:26px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--bg);transition:all 0.3s;
-}
-.step-ico svg{width:13px;height:13px}
-.step-ico.running{background:#fef3c7}
-.step-ico.running svg{animation:spin 1s linear infinite;color:#f59e0b}
-.step-ico.done{background:var(--green-bg)}
-.step-ico.done svg{color:var(--green)}
-.step-body{flex:1}
-.step-name{font-size:13px;font-weight:500;color:var(--text)}
-.step-sub{font-size:11px;color:var(--text-3);margin-top:1px}
-.step-ms{font-size:11px;color:var(--text-3);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
-
-/* Success banner */
-.success-banner{
-  display:none;
-  background:var(--green-bg);border:1px solid #bbf7d0;border-radius:var(--r);
-  padding:12px 14px;margin-bottom:14px;
-  flex-direction:row;align-items:center;gap:12px;
-  animation:fadeIn 0.3s ease;
-}
-.success-banner.on{display:flex}
-.success-ico{
-  width:32px;height:32px;border-radius:50%;background:var(--green);
-  color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:700;flex-shrink:0;
-}
-.success-title{font-size:13px;font-weight:600;color:var(--green-dark)}
-.success-sub{font-size:11px;color:#065f46;margin-top:2px}
-
-/* WA button */
-.wa-btn{
-  display:none;width:100%;height:42px;
-  background:#25d366;color:#fff;border:none;border-radius:var(--r);
-  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;align-items:center;justify-content:center;gap:8px;
-  animation:fadeIn 0.3s ease;
-}
-.wa-btn.on{display:flex}
-.wa-btn:active{background:#1fba58;transform:scale(0.99)}
-
-.processing{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--text-3)}
-.dots{display:flex;gap:4px}
-.dots span{width:5px;height:5px;border-radius:50%;background:var(--border-input);animation:dot 1.2s ease-in-out infinite}
-.dots span:nth-child(2){animation-delay:.2s}
-.dots span:nth-child(3){animation-delay:.4s}
-@keyframes dot{0%,80%,100%{transform:scale(0.7);opacity:0.4}40%{transform:scale(1);opacity:1}}
+.steps{display:flex;flex-direction:column;margin-bottom:16px}.step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);opacity:0.25;transition:opacity 0.35s}.step:last-child{border-bottom:none}.step.active{opacity:1}
+.step-ico{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface2)}.step-ico svg{width:13px;height:13px}.step-ico.running{background:rgba(255,180,0,0.15)}.step-ico.running svg{animation:spin 1s linear infinite;color:#ffb400}.step-ico.done{background:var(--accent-light)}.step-ico.done svg{color:var(--accent)}.step-body{flex:1}.step-name{font-size:13px;font-weight:500}.step-sub{font-size:11px;color:var(--text-3);margin-top:1px}.step-ms{font-size:11px;color:var(--text-3);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}
+.sheet-done{display:none;background:var(--accent-light);border:1px solid rgba(0,230,138,0.2);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;align-items:center;gap:12px}.sheet-done.on{display:flex}.sheet-done-ico{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}.sheet-done-text{font-size:13px;font-weight:600;color:var(--accent)}.sheet-done-sub{font-size:11px;color:var(--accent-dark);margin-top:2px}
+.sheet-close{width:100%;height:44px;background:var(--accent);color:var(--bg);border:none;border-radius:var(--r);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;gap:6px}.sheet-close.on{display:flex}.sheet-close:active{background:var(--accent-dark)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="topbar-left">
-      <img src="https://saptivaops.github.io/saptiva-assets/Saptiva%20AI%20logo_whitebg.PNG" class="topbar-logo" alt="Saptiva AI">
-      <div class="topbar-sep"></div>
-      <div class="topbar-title">EvenTracker</div>
+  <div class="header">
+    <div class="header-top">
+      <div class="header-left">
+        <img src="https://raw.githubusercontent.com/jdjca/saptiva-assets/main/Saptiva%20AI%20logo_whitebg.PNG" alt="Saptiva AI" class="header-logo">
+        <div class="header-sep"></div>
+        <div class="header-title">SCOUT</div>
+      </div>
+      <div class="rep-badge" id="repBadge">JC</div>
     </div>
-    <div class="rep-badge" id="repBadge">--</div>
+    <div class="header-sub">Lead capture · Saptiva AI</div>
   </div>
-
-  <!-- FORM BODY -->
   <div class="body">
+    <!-- LEAD FORM -->
+    <div class="field"><label>Nombre</label><input type="text" id="nombre" placeholder="Nombre completo"></div>
+    <div class="row-2">
+      <div class="field"><label>Teléfono</label><input type="tel" id="telefono" placeholder="+52 477..." inputmode="tel"></div>
+      <div class="field"><label>Email</label><input type="email" id="email" placeholder="email@empresa.com" inputmode="email"></div>
+    </div>
+    <div class="dup-warn" id="dupWarn"></div>
+    <div class="row-2">
+      <div class="field"><label>Empresa</label><input type="text" id="empresa" placeholder="Empresa"></div>
+      <div class="field"><label>Cargo</label><input type="text" id="cargo" placeholder="Puesto"></div>
+    </div>
+    <div class="field"><label>Evento</label><input type="text" id="evento" placeholder="Ej: GTC 2026, Cena CDMX"></div>
+    <div class="field"><label>Notas</label><textarea id="comentario" placeholder="Contexto, qué platicaron..."></textarea></div>
+    <div class="row-2">
+      <div class="field"><label>Idioma</label><select id="idioma"><option value="es">🇲🇽 Español</option><option value="en">🇺🇸 English</option></select></div>
+      <div class="field" style="flex:0.5"></div>
+    </div>
+    <button class="btn-save" onclick="guardarLead()">🔍 Guardar & Scout On</button>
 
-    <div class="section">
-      <div class="section-label">Evento</div>
-      <div class="field">
-        <input type="text" id="evento" placeholder="AI Summit CDMX, Expo Fintech, Referido..." autocomplete="off">
+    <div class="divider"></div>
+
+    <!-- MEET / SCHEDULE -->
+    <div class="section-title">Agenda</div>
+    <button class="tool-btn accent" onclick="toggleMeet()">📅 Agendar Meet</button>
+    <div class="panel" id="meetPanel">
+      <div class="meet-options">
+        <a class="meet-opt" id="meetWA" href="#" target="_blank">💬 Enviar por WhatsApp</a>
+        <button class="meet-opt" onclick="showQR('meet')">📷 Mostrar QR para escanear</button>
+        <a class="meet-opt" id="meetDirect" href="#" target="_blank">🔗 Abrir link directo</a>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-label">Contacto</div>
-      <div class="field">
-        <input type="text" id="nombre" placeholder="Nombre completo" required autocomplete="off">
+    <div class="divider"></div>
+
+    <!-- TOOLS -->
+    <div class="section-title">Herramientas</div>
+    <div class="tools-grid">
+      <a class="tool-btn" href="https://saptiva.com" target="_blank">🌐 FWD Website</a>
+      <button class="tool-btn" onclick="toggleApiKey()">⚡ Fast API Key</button>
+      <div class="panel" id="apiPanel">
+        <div class="field"><label>Email del cliente</label><input type="email" id="apiEmail" placeholder="email@empresa.com"></div>
+        <button class="btn-go" onclick="sendApiKey()">Enviar instrucciones</button>
       </div>
-      <div class="row">
-        <div class="field">
-          <input type="tel" id="telefono" placeholder="+52 477 000 0000" required autocomplete="off">
-          <div class="field-hint">Incluir código de país</div>
+      <a class="tool-btn" href="https://saptiva.com" target="_blank">🧪 Studio (Beta)</a>
+      <button class="tool-btn accent" onclick="toggleIntro()">🤝 New Intro</button>
+      <div class="panel" id="introPanel">
+        <label style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;display:block">Rep(s) de Saptiva a presentar</label>
+        <div class="intro-ms-wrap">
+          <div class="intro-ms-selected empty" id="introSel" onclick="toggleIntroDD()"></div>
+          <div class="intro-dd" id="introDD"></div>
         </div>
-        <div class="field">
-          <input type="email" id="email" placeholder="email@empresa.com" autocomplete="off">
-        </div>
-      </div>
-      <div class="dup-warn" id="dupWarn"></div>
-      <div class="row">
-        <div class="field">
-          <input type="text" id="empresa" placeholder="Empresa" autocomplete="off">
-        </div>
-        <div class="field">
-          <input type="text" id="cargo" placeholder="Cargo" autocomplete="off">
-        </div>
+        <div class="field"><label>Email(s) del contacto (separados por coma)</label><input type="text" id="introEmails" placeholder="sam@openai.com, elon@tesla.com"></div>
+        <button class="btn-go" onclick="sendIntro()">Go!</button>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-label">Notas</div>
-      <div class="field">
-        <textarea id="comentario" placeholder="¿De qué platicaron? ¿Qué necesita? ¿Cuál es la oportunidad?" maxlength="140"></textarea>
-      </div>
-    </div>
+    <div class="divider"></div>
 
+    <!-- QR CODES -->
+    <div class="section-title">QR Codes</div>
+    <div class="qr-section">
+      <a class="qr-btn" id="qrWA" href="#" target="_blank">💬 WhatsApp</a>
+      <a class="qr-btn" id="qrLI" href="#" target="_blank">💼 LinkedIn</a>
+    </div>
   </div>
 
   <!-- QR MODAL -->
-  <div class="qr-backdrop" id="qrBackdrop" onclick="closeQR()">
-    <div class="qr-card" onclick="event.stopPropagation()">
-      <div class="qr-name" id="qrName"></div>
-      <div id="qr-canvas"></div>
-      <div style="font-size:11px;color:var(--text-3)">Escanea con tu cámara</div>
-      <button class="qr-close" onclick="closeQR()">Cerrar</button>
+  <div class="qr-modal" id="qrModal" onclick="closeQR()">
+    <div class="qr-modal-box" onclick="event.stopPropagation()">
+      <p style="font-size:15px;font-weight:700;color:var(--text)">Escanea para agendar</p>
+      <img id="qrImg" src="" alt="QR">
+      <p>Apunta la cámara del prospecto aquí</p>
+      <button class="qr-modal-close" onclick="closeQR()">Cerrar</button>
     </div>
   </div>
 
   <!-- DEPLOY SHEET -->
   <div class="deploy-backdrop" id="deployBackdrop">
     <div class="deploy-sheet">
-
-      <div class="sheet-header">
-        <div class="sheet-title">Procesando lead</div>
-        <div class="sheet-chip" id="sheetChip">
-          <div class="chip-dot" id="chipDot"></div>
-          <span id="chipLabel">En proceso</span>
-        </div>
-      </div>
-
-      <div class="steps">
-        <div class="step" id="s0">
-          <div class="step-ico" id="si0"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
-          <div class="step-body">
-            <div class="step-name">Guardar en base de datos</div>
-            <div class="step-sub">Notion · Lead Pipeline</div>
-          </div>
-          <div class="step-ms" id="sm0"></div>
-        </div>
-        <div class="step" id="s1">
-          <div class="step-ico" id="si1"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
-          <div class="step-body">
-            <div class="step-name">Enviar email de seguimiento</div>
-            <div class="step-sub" id="ss1">events@saptiva.com → prospecto</div>
-          </div>
-          <div class="step-ms" id="sm1"></div>
-        </div>
-        <div class="step" id="s2">
-          <div class="step-ico" id="si2"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
-          <div class="step-body">
-            <div class="step-name">Programar recordatorios</div>
-            <div class="step-sub">48 hrs · 120 hrs · si no agenda</div>
-          </div>
-          <div class="step-ms" id="sm2"></div>
-        </div>
-        <div class="step" id="s3">
-          <div class="step-ico" id="si3"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg></div>
-          <div class="step-body">
-            <div class="step-name">Preparar mensaje de WhatsApp</div>
-            <div class="step-sub">Listo para enviar</div>
-          </div>
-          <div class="step-ms" id="sm3"></div>
-        </div>
-      </div>
-
-      <div class="success-banner" id="successBanner">
-        <div class="success-ico">✓</div>
-        <div>
-          <div class="success-title">Flujo de lead completado</div>
-          <div class="success-sub">Ahora mándale un hola en WhatsApp para cerrar el ciclo</div>
-        </div>
-      </div>
-
-      <div id="sheetFooter">
-        <div class="processing" id="processing">
-          <div class="dots"><span></span><span></span><span></span></div>
-          <span>Procesando...</span>
-        </div>
-        <button class="wa-btn" id="waBtn" onclick="openWA()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Terminar conectando por WhatsApp
-        </button>
-      </div>
-
+      <div class="sheet-header"><div class="sheet-title" id="sheetTitle">Guardando lead</div><div class="sheet-chip" id="sheetChip"><div class="chip-dot"></div><span id="chipLabel">En proceso</span></div></div>
+      <div class="steps" id="stepsContainer"></div>
+      <div class="sheet-done" id="sheetDone"><div class="sheet-done-ico">✓</div><div><div class="sheet-done-text" id="doneText">Lead guardado</div><div class="sheet-done-sub" id="doneSub"></div></div></div>
+      <button class="sheet-close" id="sheetClose" onclick="closeSheet()">🔍 Cerrar y seguirle</button>
     </div>
   </div>
-
-  <!-- ACTIONS — inline with form -->
-  <div style="padding:8px 20px 16px">
-    <button class="save-btn" onclick="guardar()">Guardar & a seguirle chingando 🤘</button>
-    <div class="hint">Abre WhatsApp con mensaje prellenado al guardar</div>
-    <div class="social-row">
-      <button class="sb" onclick="showQR('wa')"><span class="ic">💬</span><span>WhatsApp</span></button>
-      <button class="sb" onclick="showQR('li')"><span class="ic">🔗</span><span>LinkedIn</span></button>
-      <button class="sb" onclick="showQR('gh')"><span class="ic">🐙</span><span>GitHub</span></button>
-      <button class="sb" onclick="showQR('hf')"><span class="ic">🤗</span><span>KAL-24B</span></button>
-    </div>
-  </div>
-
 </div>
+
 <script>
-var REPS = {
-  jc:{name:'Jesús Cisneros',firstName:'Jesús',initials:'JC',role:'COO & Cofounder',phone:'524776700684',email:'jc@saptiva.com',calendarUrl:'https://calendar.app.google/ykwfLX9srHfn4noJ8',linkedinUrl:'https://www.linkedin.com/in/jesuscisneros/',githubUrl:'https://github.com/jdjca',huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  ac:{name:'Angel Cisneros',firstName:'Angel',initials:'AC',role:'CEO & Cofounder',phone:'524773946525',email:'ac@saptiva.com',calendarUrl:'https://calendar.app.google/42VByfbnnVM3zdx69',linkedinUrl:'https://www.linkedin.com/in/angelcisneros03/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  gg:{name:'Lupita Gutiérrez',firstName:'Lupita',initials:'GG',role:'Directora Administrativa',phone:'524771299656',email:'gg@saptiva.com',calendarUrl:'https://calendar.app.google/M822cGsQo1FJT8KM7',linkedinUrl:'https://www.linkedin.com/in/guadalupe-guti%C3%A9rrez-3b90ab35a/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  ch:{name:'Cristian Huertas',firstName:'Cristian',initials:'CH',role:'Chief Revenue Officer',phone:'525523576987',email:'ch@saptiva.com',calendarUrl:null,linkedinUrl:'https://www.linkedin.com/in/cris-huertas/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  cl:{name:'Carlos Lara',firstName:'Carlos',initials:'CL',role:'Head of Product',phone:'525578457977',email:'cl@saptiva.com',calendarUrl:'https://calendar.app.google/rgRkqFDhePPiicNx7',linkedinUrl:'https://www.linkedin.com/in/carloslaraarias/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  re:{name:'Ronald Escalona',firstName:'Ronald',initials:'RE',role:'SVP of Engineering',phone:'573503424459',email:'re@saptiva.com',calendarUrl:'https://calendar.app.google/wTb8fsqueP5Ez8kB6',linkedinUrl:'https://www.linkedin.com/in/ronaldescalona/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  jf:{name:'Jaziel Flores',firstName:'Jaziel',initials:'JF',role:'Forward Deploy Engineer',phone:null,email:'jf@saptiva.com',calendarUrl:'https://calendar.app.google/EmDMrXTnB9hbFEpy6',linkedinUrl:'https://www.linkedin.com/in/jazieldavidfloresrodriguez/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  mh:{name:'Mario Hernandez',firstName:'Mario',initials:'MH',role:'AI Engineer',phone:'528681245690',email:'mh@saptiva.com',calendarUrl:'https://calendar.app.google/XkNgyutxkAwovMbq9',linkedinUrl:'https://www.linkedin.com/in/mario-hernandez-120707174/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  fe:{name:'Francisco Enriquez',firstName:'Francisco',initials:'FE',role:'AI Engineer',phone:'525566066215',email:'fe@saptiva.com',calendarUrl:'https://calendar.app.google/TUNb88of2MiPZdt1A',linkedinUrl:null,githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-  mm:{name:'Moisés Morillo',firstName:'Moisés',initials:'MM',role:'AI Platform Engineer',phone:null,email:'mm@saptiva.com',calendarUrl:'https://calendar.app.google/BggXnbbLLastAQQj6',linkedinUrl:'https://www.linkedin.com/in/moisesmorillo/',githubUrl:null,huggingfaceUrl:'https://huggingface.co/SaptivaAI/KAL-24B-mx-v1'},
-};
-
-var WEBHOOK='https://script.google.com/macros/s/AKfycbwQdY8s2yGOZLtJodkUwh4TumeoNldUw6WFfeTTy5TNoCWiE6XXKtc7p5We-NJQXvpLJA/exec';
-var slug=(window.location.pathname.split('/').pop()||'jc').replace(/\.html?$/,'');
-var REP=REPS[slug]||REPS['jc'];
-document.getElementById('repBadge').textContent=REP.initials;
-
-// Disable GitHub QR if no URL
-if(!REP.githubUrl) document.querySelector('.sb:nth-child(3)').classList.add('off');
-
-function toTC(s){
-  var u=['AI','ML','API','SDK','B2B','B2C','CRM','ERP','KYC','CEO','CTO','COO','VP','CDMX','MX','USA','SAP','IBM','AWS','IA','LLM'];
-  return s.replace(/\S+/g,function(w){return u.indexOf(w.toUpperCase())>-1?w.toUpperCase():w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()});
-}
-['nombre','evento'].forEach(function(id){
-  document.getElementById(id).addEventListener('blur',function(){if(this.value.trim())this.value=toTC(this.value.trim());});
-});
-document.getElementById('email').addEventListener('blur',function(){
-  var em=this.value.trim().toLowerCase();
-  if(!em||em.indexOf('@')<0)return;
-  var dw=document.getElementById('dupWarn');dw.classList.remove('show');
-  fetch(WEBHOOK+'?action=check_email&email='+encodeURIComponent(em))
-    .then(function(r){return r.json();})
-    .then(function(d){if(d.exists){dw.innerHTML='⚠️ Email ya registrado el <strong>'+d.date+'</strong> por <strong>'+d.rep+'</strong>.';dw.classList.add('show');}})
-    .catch(function(){});
-});
-
-// Deploy sequence
-var _waUrl='';
-function openWA(){if(_waUrl)window.open(_waUrl,'_blank');}
-
-var SPIN='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" style="animation:spin 0.8s linear infinite"><circle cx="7" cy="7" r="5" stroke-dasharray="20 12" stroke-linecap="round"/></svg>';
-var CHECK='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 7l3 3 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var WEBHOOK='https://script.google.com/macros/s/AKfycbyefcYNifrUq3y2qlouXk9Ahpr-5531xbPWfNMLJDSBkc1786c6XLsh86qvCc8gb91WwQ/exec'; // ← PEGAR URL DEL DEPLOY
 var IDLE='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/></svg>';
+var SPIN='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1.5a5.5 5.5 0 1 1-5.5 5.5"/></svg>';
+var CHECK='<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.5 7l2.5 2.5 4.5-5"/></svg>';
 
-function runDeploy(leadName,waUrl){
-  _waUrl=waUrl;
-  var bd=document.getElementById('deployBackdrop');
-  var chip=document.getElementById('sheetChip');
-  var chipLabel=document.getElementById('chipLabel');
-  var banner=document.getElementById('successBanner');
-  var waBtn=document.getElementById('waBtn');
-  var proc=document.getElementById('processing');
+// ── REP CONFIG (changes per file) ──
+var REP={slug:'jc',name:'Jesús Cisneros',role:'COO & Cofounder',phone:'524776700684',calendarUrl:'https://calendar.app.google/ykwfLX9srHfn4noJ8',linkedinUrl:'https://www.linkedin.com/in/jesuscisneros/',waUrl:'https://wa.me/524776700684'};
 
-  // reset
-  chip.className='sheet-chip';chipLabel.textContent='En proceso';
-  banner.classList.remove('on');waBtn.classList.remove('on');proc.style.display='flex';
-  document.getElementById('ss1').textContent='events@saptiva.com → '+leadName;
-  for(var i=0;i<4;i++){
-    document.getElementById('s'+i).classList.remove('active');
-    var ico=document.getElementById('si'+i);
-    ico.className='step-ico';ico.innerHTML=IDLE;
-    document.getElementById('sm'+i).textContent='';
-  }
-  bd.classList.add('on');
+var TEAM_LIST=[{slug:'ac',label:'Angel Cisneros — CEO'},{slug:'ch',label:'Cristian Huertas — CRO'},{slug:'cl',label:'Carlos Lara — Head of Product'},{slug:'re',label:'Ronald Escalona — SVP Eng'},{slug:'gg',label:'Lupita Gutiérrez — Dir. Admin'},{slug:'jc',label:'Jesús Cisneros — COO'},{slug:'jf',label:'Jaziel Flores — FDE'},{slug:'mh',label:'Mario Hernandez — AI Eng'},{slug:'fe',label:'Francisco Enriquez — AI Eng'},{slug:'mm',label:'Moisés Morillo — AI Platform'}];
 
-  function activate(i,d){setTimeout(function(){document.getElementById('s'+i).classList.add('active');var ico=document.getElementById('si'+i);ico.className='step-ico running';ico.innerHTML=SPIN;},d);}
-  function complete(i,d,ms){setTimeout(function(){var ico=document.getElementById('si'+i);ico.className='step-ico done';ico.innerHTML=CHECK;document.getElementById('sm'+i).textContent=ms+'ms';},d);}
+document.getElementById('repBadge').textContent=REP.slug.toUpperCase();
+document.getElementById('qrWA').href=REP.waUrl;
+document.getElementById('qrLI').href=REP.linkedinUrl||'https://saptiva.com';
+var waCalMsg=encodeURIComponent('Hola! Te comparto mi link para agendar una llamada: '+REP.calendarUrl+' — '+REP.name+', Saptiva AI');
+document.getElementById('meetWA').href='https://wa.me/?text='+waCalMsg;
+document.getElementById('meetDirect').href=REP.calendarUrl;
 
-  activate(0,150);complete(0,850,687);
-  activate(1,950);complete(1,1750,1243);
-  activate(2,1850);complete(2,2650,412);
-  activate(3,2750);complete(3,3350,89);
+// ── DUPLICATE CHECK ──
+var dupTimer;
+document.getElementById('email').addEventListener('input',function(){clearTimeout(dupTimer);var v=this.value.trim();if(v.length<5||v.indexOf('@')<0){document.getElementById('dupWarn').classList.remove('on');return}dupTimer=setTimeout(function(){if(!WEBHOOK)return;fetch(WEBHOOK+'?action=check_email&email='+encodeURIComponent(v)).then(function(r){return r.json()}).then(function(d){if(d.exists){document.getElementById('dupWarn').textContent='⚠️ Este email ya fue registrado el '+d.date+' por '+d.rep;document.getElementById('dupWarn').classList.add('on')}else{document.getElementById('dupWarn').classList.remove('on')}}).catch(function(){})},600)});
 
-  setTimeout(function(){
-    chip.classList.add('done');chipLabel.textContent='Completado';
-    proc.style.display='none';
-    banner.classList.add('on');
-    waBtn.classList.add('on');
-  },3600);
-}
+// ── SAVE LEAD ──
+function guardarLead(){
+  var nombre=document.getElementById('nombre').value.trim(),email=document.getElementById('email').value.trim(),err=false;
+  if(!nombre){shakeEl('nombre');err=true}if(!email){shakeEl('email');err=true}if(err)return;
+  var data={nombre:nombre,telefono:document.getElementById('telefono').value.trim(),email:email,empresa:document.getElementById('empresa').value.trim(),cargo:document.getElementById('cargo').value.trim(),evento:document.getElementById('evento').value.trim(),comentario:document.getElementById('comentario').value.trim(),idioma:document.getElementById('idioma').value,representante:REP.name,representante_slug:REP.slug,calendar_url:REP.calendarUrl};
+  if(WEBHOOK){fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){})}
+  ['nombre','telefono','email','empresa','cargo','evento','comentario'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('dupWarn').classList.remove('on');
+  runDeploy('lead',nombre+(data.empresa?' · '+data.empresa:''))}
 
-function guardar(){
-  if(!REP.calendarUrl){alert('⚠️ '+REP.firstName+' aún no tiene URL de Google Calendar. Avísale a JC.');return;}
-  var nombre=document.getElementById('nombre').value.trim();
-  var telefono=document.getElementById('telefono').value.trim();
-  var email=document.getElementById('email').value.trim();
-  var empresa=document.getElementById('empresa').value.trim();
-  var cargo=document.getElementById('cargo').value.trim();
-  var comentario=document.getElementById('comentario').value.trim();
-  var evento=document.getElementById('evento').value.trim();
-  var err=false;
-  ['nombre','telefono'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(!el.value.trim()){el.style.borderColor='#ef4444';el.style.animation='shake 0.4s ease';setTimeout(function(){el.style.borderColor='';el.style.animation='';},600);err=true;}
-  });
-  if(err)return;
-  var leadData={nombre:nombre,telefono:telefono,email:email,empresa:empresa,cargo:cargo,comentario:comentario,evento:evento,idioma:'es',representante:REP.name,representante_slug:slug,representante_email:REP.email,calendar_url:REP.calendarUrl,timestamp:new Date().toISOString()};
-  var waPhone=telefono.replace(/\D/g,'');
-  if(waPhone&&waPhone.charAt(0)!=='+')waPhone='+'+waPhone;
-  var waUrl='https://wa.me/'+waPhone.replace('+','')+'?text='+encodeURIComponent('Hola, soy '+REP.name+' de Saptiva AI');
-  fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(leadData)}).catch(function(){});
-  ['nombre','telefono','email','empresa','cargo','comentario','evento'].forEach(function(id){document.getElementById(id).value='';});
-  document.getElementById('dupWarn').classList.remove('show');
-  runDeploy(nombre,waUrl);
-  setTimeout(function(){document.getElementById('nombre').focus();},4000);
-}
+// ── MEET PANEL ──
+function toggleMeet(){document.getElementById('meetPanel').classList.toggle('on')}
 
-function showQR(type){
-  var url,label;
-  if(type==='wa'){url='https://wa.me/'+REP.phone;label='WhatsApp · '+REP.firstName;}
-  else if(type==='li'){if(!REP.linkedinUrl)return;url=REP.linkedinUrl;label='LinkedIn · '+REP.firstName;}
-  else if(type==='gh'){if(!REP.githubUrl)return;url=REP.githubUrl;label='GitHub · '+REP.firstName;}
-  else if(type==='hf'){url=REP.huggingfaceUrl;label='KAL-24B · Saptiva AI';}
-  if(!url)return;
-  document.getElementById('qrName').textContent=label;
-  var c=document.getElementById('qr-canvas');c.innerHTML='';
-  new QRCode(c,{text:url,width:192,height:192,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-  document.getElementById('qrBackdrop').classList.add('on');
-}
-function closeQR(){document.getElementById('qrBackdrop').classList.remove('on');document.getElementById('qr-canvas').innerHTML='';}
+// ── QR MODAL ──
+function showQR(type){var url=REP.calendarUrl;document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(url);document.getElementById('qrModal').classList.add('on')}
+function closeQR(){document.getElementById('qrModal').classList.remove('on')}
+
+// ── API KEY PANEL ──
+function toggleApiKey(){document.getElementById('apiPanel').classList.toggle('on')}
+function sendApiKey(){var email=document.getElementById('apiEmail').value.trim();if(!email){shakeEl('apiEmail');return}window.open('mailto:'+email+'?subject=Saptiva AI — API Key Request&body=Hola, te compartimos el link para solicitar tu API Key: https://saptiva.com','_blank');document.getElementById('apiEmail').value='';document.getElementById('apiPanel').classList.remove('on')}
+
+// ── NEW INTRO ──
+var introReps=[];
+function toggleIntro(){document.getElementById('introPanel').classList.toggle('on')}
+function toggleIntroDD(){document.getElementById('introDD').classList.toggle('on')}
+function renderIntroDD(){var dd=document.getElementById('introDD');var html='';for(var i=0;i<TEAM_LIST.length;i++){var t=TEAM_LIST[i];var sel=introReps.indexOf(t.slug)>-1;html+='<div class="intro-opt'+(sel?' selected':'')+'" onclick="toggleIntroRep(\''+t.slug+'\')"><div class="intro-chk">'+(sel?'✓':'')+'</div><span>'+t.label+'</span></div>'}dd.innerHTML=html}
+function renderIntroSel(){var box=document.getElementById('introSel');if(introReps.length===0){box.innerHTML='';box.classList.add('empty');return}box.classList.remove('empty');var html='';for(var i=0;i<introReps.length;i++){var label='';for(var j=0;j<TEAM_LIST.length;j++){if(TEAM_LIST[j].slug===introReps[i]){label=TEAM_LIST[j].slug.toUpperCase();break}}html+='<div class="intro-chip"><span>'+label+'</span><span class="ix" onclick="event.stopPropagation();removeIntroRep(\''+introReps[i]+'\')">&times;</span></div>'}box.innerHTML=html}
+function toggleIntroRep(slug){var idx=introReps.indexOf(slug);if(idx>-1)introReps.splice(idx,1);else introReps.push(slug);renderIntroDD();renderIntroSel()}
+function removeIntroRep(slug){var idx=introReps.indexOf(slug);if(idx>-1)introReps.splice(idx,1);renderIntroDD();renderIntroSel()}
+document.addEventListener('click',function(e){if(!e.target.closest('.intro-ms-wrap'))document.getElementById('introDD').classList.remove('on')});
+renderIntroDD();
+
+function sendIntro(){
+  if(introReps.length===0){document.getElementById('introSel').style.animation='shake 0.4s ease';setTimeout(function(){document.getElementById('introSel').style.animation=''},600);return}
+  var emails=document.getElementById('introEmails').value.trim();if(!emails){shakeEl('introEmails');return}
+  var toEmails=emails.split(',').map(function(e){return e.trim()}).filter(function(e){return e.length>0});
+  if(WEBHOOK){fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'new_intro',rep_slugs:introReps.slice(),to_emails:toEmails,from_slug:REP.slug})}).catch(function(){})}
+  introReps=[];renderIntroSel();renderIntroDD();document.getElementById('introEmails').value='';document.getElementById('introPanel').classList.remove('on');
+  runDeploy('intro','Intro enviado a '+toEmails.join(', '))}
+
+// ── DEPLOY ANIMATION ──
+function runDeploy(type,label){
+  var bd=document.getElementById('deployBackdrop'),chip=document.getElementById('sheetChip'),chipLabel=document.getElementById('chipLabel');
+  var done=document.getElementById('sheetDone'),closeBtn=document.getElementById('sheetClose'),sc=document.getElementById('stepsContainer');
+  chip.className='sheet-chip';chipLabel.textContent='En proceso';done.classList.remove('on');closeBtn.classList.remove('on');
+  document.getElementById('doneSub').textContent=label;
+  var steps;
+  if(type==='lead'){document.getElementById('sheetTitle').textContent='Guardando lead';document.getElementById('doneText').textContent='Lead guardado';document.getElementById('sheetClose').textContent='🔍 Cerrar y seguirle';steps=[{name:'Validar datos',sub:'Scout'},{name:'Guardar en Notion',sub:'Scout — Lead Pipeline'},{name:'Enviar email de seguimiento',sub:'events@saptiva.com'},{name:'Programar reminders',sub:'Automático'}]}
+  else{document.getElementById('sheetTitle').textContent='Enviando intro';document.getElementById('doneText').textContent='Intro enviado';document.getElementById('sheetClose').textContent='🔍 Cerrar';steps=[{name:'Preparar presentación',sub:'Scout'},{name:'Enviar email',sub:'events@saptiva.com'},{name:'Confirmar entrega',sub:'Todos en CC'}]}
+  var html='';for(var i=0;i<steps.length;i++){html+='<div class="step" id="ds'+i+'"><div class="step-ico" id="dsi'+i+'">'+IDLE+'</div><div class="step-body"><div class="step-name">'+steps[i].name+'</div><div class="step-sub">'+steps[i].sub+'</div></div><div class="step-ms" id="dsm'+i+'"></div></div>'}
+  sc.innerHTML=html;bd.classList.add('on');
+  var delays=[150,800,1600,2400],dones=[700,1500,2300,3000],ms=[312,1087,876,203];
+  if(steps.length===3){delays=[150,800,1600];dones=[700,1500,2200];ms=[312,876,54]}
+  for(var j=0;j<steps.length;j++){(function(idx){setTimeout(function(){document.getElementById('ds'+idx).classList.add('active');var ico=document.getElementById('dsi'+idx);ico.className='step-ico running';ico.innerHTML=SPIN},delays[idx]);setTimeout(function(){var ico=document.getElementById('dsi'+idx);ico.className='step-ico done';ico.innerHTML=CHECK;document.getElementById('dsm'+idx).textContent=ms[idx]+'ms'},dones[idx])})(j)}
+  var totalTime=(steps.length===3?2200:3000)+400;setTimeout(function(){chip.classList.add('done');chipLabel.textContent='Completado';done.classList.add('on');closeBtn.classList.add('on')},totalTime)}
+function closeSheet(){document.getElementById('deployBackdrop').classList.remove('on')}
+function shakeEl(id){var el=document.getElementById(id);el.style.borderColor='#c0392b';el.style.animation='shake 0.4s ease';setTimeout(function(){el.style.borderColor='';el.style.animation=''},600)}
 </script>
 </body>
 </html>
